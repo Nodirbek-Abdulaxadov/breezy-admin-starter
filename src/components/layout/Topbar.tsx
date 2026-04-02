@@ -2,6 +2,7 @@
 import { Menu, Search, Bell, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Link, useNavigate } from "react-router-dom";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,6 +14,7 @@ import {
 import { ThemeToggle } from "./ThemeToggle";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/context/AuthContext";
 
 interface TopbarProps {
   toggleSidebar: () => void;
@@ -21,6 +23,8 @@ interface TopbarProps {
 
 export const Topbar = ({ toggleSidebar, sidebarOpen }: TopbarProps) => {
   const [showSearch, setShowSearch] = useState(false);
+  const { logout } = useAuth();
+  const navigate = useNavigate();
 
   return (
     <header className="bg-background border-b border-border h-14 flex items-center justify-between px-4">
@@ -72,7 +76,13 @@ export const Topbar = ({ toggleSidebar, sidebarOpen }: TopbarProps) => {
           </Button>
         )}
 
-        <Button variant="ghost" size="icon" className="relative">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="relative"
+          onClick={() => navigate("/notifications")}
+          aria-label="Open notifications"
+        >
           <Bell className="h-5 w-5" />
           <span className="absolute top-1 right-1.5 flex h-2 w-2 rounded-full bg-destructive"></span>
         </Button>
@@ -87,16 +97,22 @@ export const Topbar = ({ toggleSidebar, sidebarOpen }: TopbarProps) => {
               </div>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-56">
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Profile</DropdownMenuItem>
-            <DropdownMenuItem>Settings</DropdownMenuItem>
-            <DropdownMenuItem>Billing</DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Log out</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+            <DropdownMenuContent align="end" className="w-56">
+              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem asChild>
+                <Link to="/profile">Profile</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/settings">Settings</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>Billing</DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem asChild>
+                <Link to="/login" onClick={logout}>Log out</Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
       </div>
     </header>
   );

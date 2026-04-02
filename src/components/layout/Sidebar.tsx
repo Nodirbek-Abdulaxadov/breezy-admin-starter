@@ -2,7 +2,6 @@
 import { NavLink } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import {
-  Home,
   Users,
   Settings,
   LayoutDashboard,
@@ -10,6 +9,9 @@ import {
   Bell,
   Calendar,
   MessageSquare,
+  ShoppingBag,
+  ClipboardList,
+  UserRound,
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
@@ -47,6 +49,9 @@ const NavItem = ({ icon: Icon, label, to, isOpen }: NavItemProps) => {
 const mainNavItems = [
   { icon: LayoutDashboard, label: "Dashboard", to: "/" },
   { icon: Users, label: "Users", to: "/users" },
+  { icon: ShoppingBag, label: "Products", to: "/products" },
+  { icon: ClipboardList, label: "Orders", to: "/orders" },
+  { icon: UserRound, label: "Customers", to: "/customers" },
   { icon: FileText, label: "Reports", to: "/reports" },
   { icon: Calendar, label: "Calendar", to: "/calendar" },
   { icon: MessageSquare, label: "Messages", to: "/messages" },
