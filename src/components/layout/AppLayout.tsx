@@ -35,11 +35,17 @@ const AppLayout = () => {
 
   return (
     <ThemeProvider defaultTheme="light" storageKey="admin-theme">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-background focus:px-3 focus:py-2 focus:shadow"
+      >
+        Skip to main content
+      </a>
       <div className="flex h-screen bg-background text-foreground">
         <Sidebar isOpen={sidebarOpen} isMobile={isMobile} />
         <div className="flex flex-col flex-1 w-full">
           <Topbar toggleSidebar={toggleSidebar} sidebarOpen={sidebarOpen} />
-          <main className="flex-1 overflow-y-auto p-4 md:p-6">
+          <main id="main-content" className="flex-1 overflow-y-auto p-4 md:p-6" tabIndex={-1}>
             <Outlet />
           </main>
           <Footer />

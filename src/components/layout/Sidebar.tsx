@@ -1,5 +1,6 @@
 
-import { NavLink } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { NavLink, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import {
   Users,
@@ -12,6 +13,9 @@ import {
   ShoppingBag,
   ClipboardList,
   UserRound,
+  Blocks,
+  ChevronDown,
+  ChevronRight,
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
@@ -25,22 +29,27 @@ interface NavItemProps {
   label: string;
   to: string;
   isOpen: boolean;
+  end?: boolean;
+  className?: string;
 }
 
-const NavItem = ({ icon: Icon, label, to, isOpen }: NavItemProps) => {
+const NavItem = ({ icon: Icon, label, to, isOpen, end = false, className }: NavItemProps) => {
   return (
     <NavLink
       to={to}
+      end={end}
       className={({ isActive }) =>
         cn(
           "flex items-center rounded-lg px-3 py-2 text-sm transition-all hover:bg-accent hover:text-accent-foreground",
           isActive ? "bg-accent text-accent-foreground font-medium" : "text-muted-foreground",
-          !isOpen && "justify-center p-2"
+          !isOpen && "justify-center p-2",
+          className
         )
       }
     >
-      <Icon className={cn("h-5 w-5", isOpen && "mr-3")} />
+      <Icon className={cn("h-5 w-5", isOpen && "mr-3")} aria-hidden="true" />
       {isOpen && <span>{label}</span>}
+      {!isOpen && <span className="sr-only">{label}</span>}
     </NavLink>
   );
 };
@@ -63,7 +72,27 @@ const secondaryNavItems = [
   { icon: Settings, label: "Settings", to: "/settings" },
 ];
 
+const componentNavItems = [
+  { icon: Blocks, label: "Overview", to: "/components", end: true },
+  { icon: Blocks, label: "Buttons", to: "/components/buttons" },
+  { icon: Blocks, label: "Forms", to: "/components/forms" },
+  { icon: Blocks, label: "Inputs", to: "/components/inputs" },
+  { icon: Blocks, label: "Dialogs", to: "/components/dialogs" },
+  { icon: Blocks, label: "Datatables", to: "/components/datatables" },
+  { icon: Blocks, label: "Misc", to: "/components/misc" },
+];
+
 export const Sidebar: React.FC<SidebarProps> = ({ isOpen, isMobile }) => {
+  const { pathname } = useLocation();
+  const componentsGroupActive = pathname.startsWith("/components");
+  const [componentsExpanded, setComponentsExpanded] = useState(componentsGroupActive);
+
+  useEffect(() => {
+    if (componentsGroupActive) {
+      setComponentsExpanded(true);
+    }
+  }, [componentsGroupActive]);
+
   return (
     <aside
       className={cn(
@@ -84,7 +113,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, isMobile }) => {
       <Separator />
       
       <div className="flex-1 px-3 py-4 overflow-y-auto">
-        <div className="space-y-1">
+        <nav className="space-y-1" aria-label="Main navigation">
           {mainNavItems.map((item) => (
             <NavItem
               key={item.to}
@@ -94,11 +123,57 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, isMobile }) => {
               isOpen={isOpen}
             />
           ))}
-        </div>
+        </nav>
         
         <Separator className="my-4" />
-        
-        <div className="space-y-1">
+
+        <div className="space-y-1" role="group" aria-label="Components navigation">
+          {isOpen ? (
+            <button
+              type="button"
+              onClick={() => setComponentsExpanded((prev) => !prev)}
+              aria-expanded={componentsExpanded}
+              aria-controls="components-nav-links"
+              className={cn(
+                "w-full flex items-center justify-between rounded-lg px-3 py-2 text-sm transition-all hover:bg-accent",
+                componentsGroupActive ? "text-foreground" : "text-muted-foreground"
+              )}
+            >
+              <span className="flex items-center">
+                <Blocks className="h-4 w-4 mr-2" aria-hidden="true" />
+                Components
+              </span>
+              {componentsExpanded ? (
+                <ChevronDown className="h-4 w-4" aria-hidden="true" />
+              ) : (
+                <ChevronRight className="h-4 w-4" aria-hidden="true" />
+              )}
+            </button>
+          ) : (
+            <NavItem icon={Blocks} label="Components" to="/components" isOpen={isOpen} />
+          )}
+          {isOpen ? (
+            <div id="components-nav-links">
+              {componentsExpanded
+                ? componentNavItems.map((item) => (
+                    <NavItem
+                      key={item.to}
+                      icon={item.icon}
+                      label={item.label}
+                      to={item.to}
+                      isOpen={isOpen}
+                      end={item.end}
+                      className="ml-5"
+                    />
+                  ))
+                : null}
+            </div>
+          ) : null}
+        </div>
+
+        <Separator className="my-4" />
+
+        <nav className="space-y-1" aria-label="Secondary navigation">
           {secondaryNavItems.map((item) => (
             <NavItem
               key={item.to}
@@ -108,7 +183,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, isMobile }) => {
               isOpen={isOpen}
             />
           ))}
-        </div>
+        </nav>
       </div>
       
       <Separator />

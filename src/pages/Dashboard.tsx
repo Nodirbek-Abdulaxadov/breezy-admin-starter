@@ -57,11 +57,11 @@ const Dashboard = () => {
               <div className="text-2xl font-bold">{stat.value}</div>
               <div className="flex items-center pt-1 text-xs">
                 {stat.trend === "up" ? (
-                  <ArrowUpRight className="mr-1 h-3 w-3 text-emerald-500" />
+                  <ArrowUpRight className="mr-1 h-3 w-3 text-foreground" />
                 ) : (
-                  <ArrowDownRight className="mr-1 h-3 w-3 text-rose-500" />
+                  <ArrowDownRight className="mr-1 h-3 w-3 text-foreground" />
                 )}
-                <span className={stat.trend === "up" ? "text-emerald-500" : "text-rose-500"}>
+                <span className="text-foreground">
                   {stat.change}
                 </span>
                 <span className="text-muted-foreground ml-1">

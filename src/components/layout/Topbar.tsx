@@ -60,6 +60,7 @@ export const Topbar = ({ toggleSidebar, sidebarOpen }: TopbarProps) => {
                 size="icon"
                 className="absolute right-0 top-0"
                 onClick={() => setShowSearch(false)}
+                aria-label="Close search"
               >
                 <X className="h-4 w-4" />
               </Button>
@@ -71,6 +72,7 @@ export const Topbar = ({ toggleSidebar, sidebarOpen }: TopbarProps) => {
             size="icon"
             onClick={() => setShowSearch(true)}
             className="hidden md:flex"
+            aria-label="Open search"
           >
             <Search className="h-5 w-5" />
           </Button>
@@ -91,7 +93,7 @@ export const Topbar = ({ toggleSidebar, sidebarOpen }: TopbarProps) => {
         
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="rounded-full">
+            <Button variant="ghost" size="icon" className="rounded-full" aria-label="Open account menu">
               <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center">
                 <span className="text-sm font-medium">JD</span>
               </div>
