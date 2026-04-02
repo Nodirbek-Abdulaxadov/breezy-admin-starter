@@ -16,6 +16,7 @@ import {
   Blocks,
   ChevronDown,
   ChevronRight,
+  DatabaseZap,
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
@@ -64,6 +65,7 @@ const mainNavItems = [
   { icon: FileText, label: "Reports", to: "/reports" },
   { icon: Calendar, label: "Calendar", to: "/calendar" },
   { icon: MessageSquare, label: "Messages", to: "/messages" },
+  { icon: DatabaseZap, label: "CRUD Example", to: "/crud-example" },
 ];
 
 // Secondary navigation items

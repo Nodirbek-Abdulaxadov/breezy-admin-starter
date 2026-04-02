@@ -26,6 +26,7 @@ const DialogsPage = lazy(() => import("./pages/components/DialogsPage"));
 const DatatablesPage = lazy(() => import("./pages/components/DatatablesPage"));
 const MiscComponentsPage = lazy(() => import("./pages/components/MiscComponentsPage"));
 const Profile = lazy(() => import("./pages/Profile"));
+const CrudExample = lazy(() => import("./pages/CrudExample"));
 const Login = lazy(() => import("./pages/Login"));
 const ForgotPassword = lazy(() => import("./pages/ForgotPassword"));
 const NotFound = lazy(() => import("./pages/NotFound"));
@@ -60,6 +61,7 @@ const App = () => (
                 <Route path="/notifications" element={<Notifications />} />
                 <Route path="/settings" element={<Settings />} />
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/crud-example" element={<CrudExample />} />
               </Route>
             </Route>
             <Route path="/login" element={<Login />} />

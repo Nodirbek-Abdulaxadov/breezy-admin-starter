@@ -9,6 +9,17 @@ export interface Product {
   status: ProductStatus;
 }
 
+export type EmployeeStatus = "Active" | "Inactive" | "On Leave";
+
+export interface Employee {
+  id: number;
+  name: string;
+  email: string;
+  role: string;
+  department: string;
+  status: EmployeeStatus;
+}
+
 export type PaymentStatus = "Paid" | "Pending" | "Refunded";
 
 export interface Order {

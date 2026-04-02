@@ -1,73 +1,161 @@
-# Welcome to your Lovable project
+# Breezy Admin Starter
 
-## Project info
+A production-ready React admin dashboard starter template built with Vite, TypeScript, shadcn/ui, and Tailwind CSS.
 
-**URL**: https://lovable.dev/projects/29346176-0020-48eb-aca2-ff3a34991216
+---
 
-## How can I edit this code?
-
-There are several ways of editing your application.
-
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/29346176-0020-48eb-aca2-ff3a34991216) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+## Quick Start
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
+# 1. Clone the repository
 git clone <YOUR_GIT_URL>
 
-# Step 2: Navigate to the project directory.
+# 2. Navigate to the project directory
 cd <YOUR_PROJECT_NAME>
 
-# Step 3: Install the necessary dependencies.
-npm i
+# 3. Install dependencies (Node.js ≥ 18 required)
+npm install        # or: bun install
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+# 4. Start the development server
+npm run dev        # or: bun dev
 ```
 
-**Edit a file directly in GitHub**
+Open [http://localhost:5173](http://localhost:5173) in your browser.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+**Default credentials** — any email / any password (auth is mocked).
 
-**Use GitHub Codespaces**
+---
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Project Structure
 
-## What technologies are used for this project?
+```
+src/
+├── components/
+│   ├── auth/          # ProtectedRoute wrapper
+│   ├── layout/        # AppLayout, Sidebar, Topbar, Footer, ThemeProvider
+│   └── ui/            # shadcn/ui primitives (button, dialog, table …)
+├── context/           # AuthContext
+├── hooks/             # use-mobile, use-toast
+├── lib/               # utils (cn helper)
+├── pages/             # One file per route
+│   └── components/    # UI component showcase pages
+├── services/
+│   ├── dataService.ts # Read-only mock data for Products & Orders
+│   └── mockApi.ts     # In-memory CRUD mock API (see below)
+└── types/
+    └── data.ts        # Shared TypeScript interfaces
+```
 
-This project is built with:
+---
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## Pages & Routes
 
-## How can I deploy this project?
+| Route | Page | Description |
+|-------|------|-------------|
+| `/` | Dashboard | KPI cards, charts, activity feed |
+| `/users` | Users | User list |
+| `/products` | Products | Product catalog with CRUD |
+| `/orders` | Orders | Order management |
+| `/customers` | Customers | Customer records |
+| `/reports` | Reports | Analytics & reports |
+| `/calendar` | Calendar | Event calendar |
+| `/messages` | Messages | Inbox |
+| `/notifications` | Notifications | Notification center |
+| `/crud-example` | **CRUD Example** | Full Create/Read/Update/Delete demo |
+| `/components/*` | Components | UI component showcase |
+| `/settings` | Settings | App settings |
+| `/profile` | Profile | User profile |
+| `/login` | Login | Auth page |
 
-Simply open [Lovable](https://lovable.dev/projects/29346176-0020-48eb-aca2-ff3a34991216) and click on Share -> Publish.
+---
 
-## Can I connect a custom domain to my Lovable project?
+## CRUD Example (Mock API)
 
-Yes, you can!
+The **CRUD Example** page (`/crud-example`) demonstrates how to wire up full Create / Read / Update / Delete operations against a simulated REST back-end.
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+### Mock API — `src/services/mockApi.ts`
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+The mock API maintains an **in-memory store** that survives navigation but resets on hard refresh — ideal for prototyping before connecting a real back-end.
+
+```ts
+import { mockApi } from "@/services/mockApi";
+
+// READ — GET /employees
+const employees = await mockApi.employees.list();
+
+// CREATE — POST /employees
+const created = await mockApi.employees.create({
+  name: "Jane Doe",
+  email: "jane@example.com",
+  role: "Designer",
+  department: "Design",
+  status: "Active",
+});
+
+// UPDATE — PUT /employees/:id
+const updated = await mockApi.employees.update(created.id, {
+  ...created,
+  role: "Senior Designer",
+});
+
+// DELETE — DELETE /employees/:id
+await mockApi.employees.delete(created.id);
+```
+
+Each method adds a small artificial delay (400 ms) to simulate real network latency.
+
+### React Query integration
+
+The CRUD page uses `@tanstack/react-query` for data fetching and cache management:
+
+```tsx
+// Fetch list
+const { data: employees, isLoading } = useQuery({
+  queryKey: ["employees"],
+  queryFn: () => mockApi.employees.list(),
+});
+
+// Mutate + invalidate cache
+const createMutation = useMutation({
+  mutationFn: (data) => mockApi.employees.create(data),
+  onSuccess: () => queryClient.invalidateQueries({ queryKey: ["employees"] }),
+});
+```
+
+### Replacing with a real API
+
+Swap the `mockApi` calls in `src/services/mockApi.ts` with `fetch` / `axios` calls pointing at your real endpoints. The page component and React Query hooks require **no changes**.
+
+---
+
+## Technologies
+
+| Tool | Purpose |
+|------|---------|
+| [Vite](https://vitejs.dev/) | Build tool & dev server |
+| [React 18](https://react.dev/) | UI framework |
+| [TypeScript](https://www.typescriptlang.org/) | Type safety |
+| [shadcn/ui](https://ui.shadcn.com/) | Accessible UI components |
+| [Tailwind CSS](https://tailwindcss.com/) | Utility-first styling |
+| [React Router v6](https://reactrouter.com/) | Client-side routing |
+| [TanStack Query v5](https://tanstack.com/query) | Async state & cache |
+| [Lucide React](https://lucide.dev/) | Icon set |
+
+---
+
+## Available Scripts
+
+```sh
+npm run dev      # Start development server
+npm run build    # Production build → dist/
+npm run preview  # Preview production build locally
+npm run lint     # ESLint
+```
+
+---
+
+## Deployment
+
+Build the project with `npm run build` and deploy the `dist/` folder to any static host (Vercel, Netlify, GitHub Pages, etc.).
+
+For Lovable users: open the [Lovable Project](https://lovable.dev/projects/29346176-0020-48eb-aca2-ff3a34991216) and click **Share → Publish**.
