@@ -24,7 +24,6 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
   componentDidCatch(error: Error, info: React.ErrorInfo): void {
     if (this.props.onError) this.props.onError(error, info);
     if (import.meta.env.DEV) {
-       
       console.error("[ErrorBoundary]", error, info);
     }
   }
