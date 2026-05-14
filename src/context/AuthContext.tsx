@@ -1,39 +1,17 @@
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-  type ReactNode,
-} from "react";
+import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
 import { api, ApiError, isMockMode } from "@/lib/api";
-
-export interface AuthUser {
-  id: string;
-  email: string;
-  name: string;
-  roles?: string[];
-  avatarUrl?: string;
-}
-
-interface AuthContextValue {
-  user: AuthUser | null;
-  isAuthenticated: boolean;
-  isLoading: boolean;
-  login: (email: string, password: string) => Promise<void>;
-  logout: () => void;
-}
-
-const TOKEN_KEY = "auth.accessToken";
-const USER_KEY = "auth.user";
-
-export const AuthContext = createContext<AuthContextValue | undefined>(undefined);
+import {
+  AuthContext,
+  AUTH_TOKEN_KEY,
+  AUTH_USER_KEY,
+  type AuthContextValue,
+  type AuthUser,
+} from "@/context/auth-context";
 
 const readStoredUser = (): AuthUser | null => {
   if (typeof window === "undefined") return null;
   try {
-    const raw = localStorage.getItem(USER_KEY);
+    const raw = localStorage.getItem(AUTH_USER_KEY);
     if (!raw) return null;
     return JSON.parse(raw) as AuthUser;
   } catch {
@@ -43,7 +21,7 @@ const readStoredUser = (): AuthUser | null => {
 
 const readStoredToken = (): string | null => {
   if (typeof window === "undefined") return null;
-  return localStorage.getItem(TOKEN_KEY);
+  return localStorage.getItem(AUTH_TOKEN_KEY);
 };
 
 const AuthProvider = ({ children }: { children: ReactNode }) => {
@@ -51,15 +29,14 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   const logout = useCallback(() => {
-    localStorage.removeItem(TOKEN_KEY);
-    localStorage.removeItem(USER_KEY);
+    localStorage.removeItem(AUTH_TOKEN_KEY);
+    localStorage.removeItem(AUTH_USER_KEY);
     setUser(null);
     if (typeof window !== "undefined") {
       window.dispatchEvent(new Event("auth:logout"));
     }
   }, []);
 
-  // Initial restore + background refresh
   useEffect(() => {
     let cancelled = false;
     const restore = async () => {
@@ -71,22 +48,20 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
           setUser(storedUser);
         }
 
-        // Background refresh
         try {
           if (!isMockMode()) {
             const fresh = await api.get<AuthUser>("/auth/me");
             if (!cancelled) {
               setUser(fresh);
-              localStorage.setItem(USER_KEY, JSON.stringify(fresh));
+              localStorage.setItem(AUTH_USER_KEY, JSON.stringify(fresh));
             }
           }
         } catch (err) {
           if (!cancelled) {
             const status = err instanceof ApiError ? err.status : undefined;
             if (status === 401 || status === undefined) {
-              // silent logout
-              localStorage.removeItem(TOKEN_KEY);
-              localStorage.removeItem(USER_KEY);
+              localStorage.removeItem(AUTH_TOKEN_KEY);
+              localStorage.removeItem(AUTH_USER_KEY);
               setUser(null);
             }
           }
@@ -105,7 +80,6 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     };
   }, []);
 
-  // Listen for unauthorized events
   useEffect(() => {
     const handler = () => {
       logout();
@@ -125,8 +99,8 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
         email,
         name: email.split("@")[0],
       };
-      localStorage.setItem(TOKEN_KEY, token);
-      localStorage.setItem(USER_KEY, JSON.stringify(mockUser));
+      localStorage.setItem(AUTH_TOKEN_KEY, token);
+      localStorage.setItem(AUTH_USER_KEY, JSON.stringify(mockUser));
       setUser(mockUser);
       return;
     }
@@ -136,8 +110,8 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
       user: AuthUser;
     }>("/auth/login", { email, password });
 
-    localStorage.setItem(TOKEN_KEY, result.accessToken);
-    localStorage.setItem(USER_KEY, JSON.stringify(result.user));
+    localStorage.setItem(AUTH_TOKEN_KEY, result.accessToken);
+    localStorage.setItem(AUTH_USER_KEY, JSON.stringify(result.user));
     setUser(result.user);
   }, []);
 
@@ -153,14 +127,6 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-};
-
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
-  return context;
 };
 
 export { AuthProvider };

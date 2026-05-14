@@ -19,7 +19,7 @@ import {
   DatabaseZap,
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
-import { useAuth } from "@/context/AuthContext";
+import { useAuth } from "@/hooks/use-auth";
 
 interface SidebarProps {
   isOpen: boolean;
