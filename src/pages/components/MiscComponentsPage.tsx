@@ -9,7 +9,9 @@ const MiscComponentsPage = () => {
     <div className="space-y-6">
       <div>
         <h2 className="text-3xl font-bold tracking-tight">Misc Components</h2>
-        <p className="text-muted-foreground">Qo'shimcha ko'p ishlatiladigan komponentlar to'plami.</p>
+        <p className="text-muted-foreground">
+          Qo'shimcha ko'p ishlatiladigan komponentlar to'plami.
+        </p>
       </div>
 
       <DocSection

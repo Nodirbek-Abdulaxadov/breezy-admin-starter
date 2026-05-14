@@ -20,11 +20,46 @@ const delay = (ms = 400) => new Promise<void>((res) => setTimeout(res, ms));
 let nextId = 6;
 
 const seed: Employee[] = [
-  { id: 1, name: "Alice Johnson",   email: "alice@example.com",   role: "Frontend Dev",   department: "Engineering", status: "Active" },
-  { id: 2, name: "Bob Smith",       email: "bob@example.com",     role: "Backend Dev",    department: "Engineering", status: "Active" },
-  { id: 3, name: "Carol Williams",  email: "carol@example.com",   role: "Product Manager",department: "Product",     status: "Active" },
-  { id: 4, name: "David Brown",     email: "david@example.com",   role: "Designer",       department: "Design",      status: "On Leave" },
-  { id: 5, name: "Eve Davis",       email: "eve@example.com",     role: "QA Engineer",    department: "Engineering", status: "Inactive" },
+  {
+    id: 1,
+    name: "Alice Johnson",
+    email: "alice@example.com",
+    role: "Frontend Dev",
+    department: "Engineering",
+    status: "Active",
+  },
+  {
+    id: 2,
+    name: "Bob Smith",
+    email: "bob@example.com",
+    role: "Backend Dev",
+    department: "Engineering",
+    status: "Active",
+  },
+  {
+    id: 3,
+    name: "Carol Williams",
+    email: "carol@example.com",
+    role: "Product Manager",
+    department: "Product",
+    status: "Active",
+  },
+  {
+    id: 4,
+    name: "David Brown",
+    email: "david@example.com",
+    role: "Designer",
+    department: "Design",
+    status: "On Leave",
+  },
+  {
+    id: 5,
+    name: "Eve Davis",
+    email: "eve@example.com",
+    role: "QA Engineer",
+    department: "Engineering",
+    status: "Inactive",
+  },
 ];
 
 // Mutable in-memory store — persists for the lifetime of the browser session.
@@ -67,3 +102,23 @@ export const mockApi = {
     },
   },
 };
+
+// ─── Real ↔ Mock toggle (future wiring) ───────────────────────────────────────
+//
+// Toggle between real API and mock via VITE_USE_MOCK_API.
+// Services can use this pattern once real endpoints exist:
+//
+//   import { api, isMockMode } from "@/lib/api";
+//   import { mockApi } from "@/services/mockApi";
+//
+//   const realEmployeesApi = {
+//     list:   ()                              => api.get<Employee[]>("/employees"),
+//     create: (data: Omit<Employee, "id">)    => api.post<Employee>("/employees", data),
+//     update: (id: number, data: Omit<Employee, "id">) =>
+//                                                api.put<Employee>(`/employees/${id}`, data),
+//     delete: (id: number)                    => api.delete<{ id: number }>(`/employees/${id}`),
+//   };
+//
+//   export const employees = isMockMode() ? mockApi.employees : realEmployeesApi;
+//
+// Left intentionally un-wired: real endpoints aren't implemented yet.

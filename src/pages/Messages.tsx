@@ -1,11 +1,5 @@
 import { useState } from "react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -28,7 +22,12 @@ const conversations: Conversation[] = [
     preview: "Could you share the latest dashboard metrics?",
     unread: 2,
     messages: [
-      { id: 1, fromMe: false, text: "Hi, do you have the latest dashboard metrics?", time: "09:12" },
+      {
+        id: 1,
+        fromMe: false,
+        text: "Hi, do you have the latest dashboard metrics?",
+        time: "09:12",
+      },
       { id: 2, fromMe: true, text: "Yes, I can send them in a few minutes.", time: "09:14" },
       { id: 3, fromMe: false, text: "Could you share before the leadership sync?", time: "09:15" },
     ],
@@ -59,7 +58,7 @@ const Messages = () => {
   const [search, setSearch] = useState("");
   const [activeId, setActiveId] = useState(conversations[0].id);
   const filteredConversations = conversations.filter((item) =>
-    [item.name, item.preview].join(" ").toLowerCase().includes(search.trim().toLowerCase())
+    [item.name, item.preview].join(" ").toLowerCase().includes(search.trim().toLowerCase()),
   );
   const activeConversation =
     filteredConversations.find((item) => item.id === activeId) ?? filteredConversations[0];
@@ -104,7 +103,9 @@ const Messages = () => {
                       <p className="font-medium">{item.name}</p>
                       {item.unread > 0 ? <Badge>{item.unread}</Badge> : null}
                     </div>
-                    <p className="mt-1 line-clamp-1 text-sm text-muted-foreground">{item.preview}</p>
+                    <p className="mt-1 line-clamp-1 text-sm text-muted-foreground">
+                      {item.preview}
+                    </p>
                   </button>
                 ))}
                 {filteredConversations.length === 0 ? (
@@ -168,7 +169,9 @@ const Messages = () => {
                   ))}
                 </div>
               ) : (
-                <p className="text-center text-sm text-muted-foreground">Select a conversation to view messages.</p>
+                <p className="text-center text-sm text-muted-foreground">
+                  Select a conversation to view messages.
+                </p>
               )}
             </ScrollArea>
 

@@ -16,13 +16,7 @@ import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { mockApi } from "@/services/mockApi";
 import type { Employee, EmployeeStatus } from "@/types/data";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -75,7 +69,7 @@ import { Plus, Search, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 const QUERY_KEY = ["employees"];
 
 const statusVariant: Record<EmployeeStatus, "default" | "secondary" | "outline"> = {
-  Active:   "default",
+  Active: "default",
   "On Leave": "secondary",
   Inactive: "outline",
 };
@@ -95,14 +89,18 @@ const CrudExample = () => {
   const { toast } = useToast();
 
   // ── local UI state ──────────────────────────────────────────────────────────
-  const [search, setSearch]           = useState("");
-  const [formOpen, setFormOpen]       = useState(false);
-  const [editTarget, setEditTarget]   = useState<Employee | null>(null);
+  const [search, setSearch] = useState("");
+  const [formOpen, setFormOpen] = useState(false);
+  const [editTarget, setEditTarget] = useState<Employee | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<Employee | null>(null);
-  const [formData, setFormData]       = useState<Omit<Employee, "id">>(EMPTY_FORM);
+  const [formData, setFormData] = useState<Omit<Employee, "id">>(EMPTY_FORM);
 
   // ── READ ────────────────────────────────────────────────────────────────────
-  const { data: employees = [], isLoading, isError } = useQuery({
+  const {
+    data: employees = [],
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: QUERY_KEY,
     queryFn: () => mockApi.employees.list(),
   });
@@ -115,7 +113,8 @@ const CrudExample = () => {
       toast({ title: "Employee created", description: `${formData.name} has been added.` });
       setFormOpen(false);
     },
-    onError: () => toast({ title: "Error", description: "Could not create employee.", variant: "destructive" }),
+    onError: () =>
+      toast({ title: "Error", description: "Could not create employee.", variant: "destructive" }),
   });
 
   // ── UPDATE ──────────────────────────────────────────────────────────────────
@@ -127,7 +126,8 @@ const CrudExample = () => {
       toast({ title: "Employee updated", description: `${formData.name} has been saved.` });
       setFormOpen(false);
     },
-    onError: () => toast({ title: "Error", description: "Could not update employee.", variant: "destructive" }),
+    onError: () =>
+      toast({ title: "Error", description: "Could not update employee.", variant: "destructive" }),
   });
 
   // ── DELETE ──────────────────────────────────────────────────────────────────
@@ -138,7 +138,8 @@ const CrudExample = () => {
       toast({ title: "Employee removed", description: `${deleteTarget?.name} has been deleted.` });
       setDeleteTarget(null);
     },
-    onError: () => toast({ title: "Error", description: "Could not delete employee.", variant: "destructive" }),
+    onError: () =>
+      toast({ title: "Error", description: "Could not delete employee.", variant: "destructive" }),
   });
 
   // ── derived data ────────────────────────────────────────────────────────────
@@ -188,11 +189,23 @@ const CrudExample = () => {
         <CardHeader className="pb-2">
           <CardTitle className="text-base">How it works</CardTitle>
         </CardHeader>
-        <CardContent className="text-sm text-muted-foreground space-y-1">
-          <p>• <strong>Read</strong> — <code>useQuery</code> calls <code>mockApi.employees.list()</code> on mount.</p>
-          <p>• <strong>Create / Update</strong> — <code>useMutation</code> calls <code>create()</code> or <code>update()</code>, then invalidates the query cache.</p>
-          <p>• <strong>Delete</strong> — confirmation dialog → <code>useMutation</code> calls <code>delete()</code>.</p>
-          <p>• Data lives in an <strong>in-memory store</strong> (<code>src/services/mockApi.ts</code>) and resets on hard refresh.</p>
+        <CardContent className="space-y-1 text-sm text-muted-foreground">
+          <p>
+            • <strong>Read</strong> — <code>useQuery</code> calls{" "}
+            <code>mockApi.employees.list()</code> on mount.
+          </p>
+          <p>
+            • <strong>Create / Update</strong> — <code>useMutation</code> calls{" "}
+            <code>create()</code> or <code>update()</code>, then invalidates the query cache.
+          </p>
+          <p>
+            • <strong>Delete</strong> — confirmation dialog → <code>useMutation</code> calls{" "}
+            <code>delete()</code>.
+          </p>
+          <p>
+            • Data lives in an <strong>in-memory store</strong> (
+            <code>src/services/mockApi.ts</code>) and resets on hard refresh.
+          </p>
         </CardContent>
       </Card>
 
@@ -201,19 +214,33 @@ const CrudExample = () => {
         <Card>
           <CardHeader className="pb-2">
             <CardDescription>Total Employees</CardDescription>
-            <CardTitle>{isLoading ? <Skeleton className="h-7 w-10" /> : employees.length}</CardTitle>
+            <CardTitle>
+              {isLoading ? <Skeleton className="h-7 w-10" /> : employees.length}
+            </CardTitle>
           </CardHeader>
         </Card>
         <Card>
           <CardHeader className="pb-2">
             <CardDescription>Active</CardDescription>
-            <CardTitle>{isLoading ? <Skeleton className="h-7 w-10" /> : employees.filter((e) => e.status === "Active").length}</CardTitle>
+            <CardTitle>
+              {isLoading ? (
+                <Skeleton className="h-7 w-10" />
+              ) : (
+                employees.filter((e) => e.status === "Active").length
+              )}
+            </CardTitle>
           </CardHeader>
         </Card>
         <Card>
           <CardHeader className="pb-2">
             <CardDescription>Inactive / On Leave</CardDescription>
-            <CardTitle>{isLoading ? <Skeleton className="h-7 w-10" /> : employees.filter((e) => e.status !== "Active").length}</CardTitle>
+            <CardTitle>
+              {isLoading ? (
+                <Skeleton className="h-7 w-10" />
+              ) : (
+                employees.filter((e) => e.status !== "Active").length
+              )}
+            </CardTitle>
           </CardHeader>
         </Card>
       </div>
@@ -221,7 +248,7 @@ const CrudExample = () => {
       {/* Table card */}
       <Card>
         <CardHeader className="flex flex-col gap-4">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <CardTitle>Employees</CardTitle>
               <CardDescription>Manage employee records</CardDescription>
@@ -243,10 +270,8 @@ const CrudExample = () => {
         </CardHeader>
 
         <CardContent>
-          {isError && (
-            <p className="text-sm text-destructive">Failed to load employees.</p>
-          )}
-          <div className="rounded-md border overflow-hidden">
+          {isError && <p className="text-sm text-destructive">Failed to load employees.</p>}
+          <div className="overflow-hidden rounded-md border">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -259,26 +284,29 @@ const CrudExample = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {isLoading
-                  ? Array.from({ length: 5 }).map((_, i) => (
-                      <TableRow key={i}>
-                        {Array.from({ length: 6 }).map((__, j) => (
-                          <TableCell key={j}><Skeleton className="h-4 w-full" /></TableCell>
-                        ))}
-                      </TableRow>
-                    ))
-                  : filtered.length === 0
-                  ? (
-                    <TableRow>
-                      <TableCell colSpan={6} className="text-center text-muted-foreground py-10">
-                        No employees found.
-                      </TableCell>
+                {isLoading ? (
+                  Array.from({ length: 5 }).map((_, i) => (
+                    <TableRow key={i}>
+                      {Array.from({ length: 6 }).map((__, j) => (
+                        <TableCell key={j}>
+                          <Skeleton className="h-4 w-full" />
+                        </TableCell>
+                      ))}
                     </TableRow>
-                  )
-                  : filtered.map((employee) => (
+                  ))
+                ) : filtered.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={6} className="py-10 text-center text-muted-foreground">
+                      No employees found.
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  filtered.map((employee) => (
                     <TableRow key={employee.id}>
                       <TableCell className="font-medium">{employee.name}</TableCell>
-                      <TableCell className="hidden md:table-cell text-muted-foreground">{employee.email}</TableCell>
+                      <TableCell className="hidden text-muted-foreground md:table-cell">
+                        {employee.email}
+                      </TableCell>
                       <TableCell className="hidden sm:table-cell">{employee.role}</TableCell>
                       <TableCell className="hidden lg:table-cell">{employee.department}</TableCell>
                       <TableCell>
@@ -307,7 +335,8 @@ const CrudExample = () => {
                         </DropdownMenu>
                       </TableCell>
                     </TableRow>
-                  ))}
+                  ))
+                )}
               </TableBody>
             </Table>
           </div>
@@ -320,7 +349,9 @@ const CrudExample = () => {
           <DialogHeader>
             <DialogTitle>{editTarget ? "Edit Employee" : "Add Employee"}</DialogTitle>
             <DialogDescription>
-              {editTarget ? "Update the employee's details below." : "Fill in the details for the new employee."}
+              {editTarget
+                ? "Update the employee's details below."
+                : "Fill in the details for the new employee."}
             </DialogDescription>
           </DialogHeader>
 
@@ -402,7 +433,8 @@ const CrudExample = () => {
           <AlertDialogHeader>
             <AlertDialogTitle>Delete employee?</AlertDialogTitle>
             <AlertDialogDescription>
-              This will permanently remove <strong>{deleteTarget?.name}</strong>. This action cannot be undone.
+              This will permanently remove <strong>{deleteTarget?.name}</strong>. This action cannot
+              be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

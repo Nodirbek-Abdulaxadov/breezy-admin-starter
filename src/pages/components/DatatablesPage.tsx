@@ -34,7 +34,10 @@ const DatatablesPage = () => {
   const filteredRows = useMemo(() => {
     const normalized = query.trim().toLowerCase();
     return rows.filter((item) =>
-      [item.customer, item.email, item.plan, item.status].join(" ").toLowerCase().includes(normalized)
+      [item.customer, item.email, item.plan, item.status]
+        .join(" ")
+        .toLowerCase()
+        .includes(normalized),
     );
   }, [query]);
 
@@ -42,7 +45,9 @@ const DatatablesPage = () => {
     <div className="space-y-6">
       <div>
         <h2 className="text-3xl font-bold tracking-tight">Datatables</h2>
-        <p className="text-muted-foreground">Table asosida listing, filter, selection va status ko'rsatish.</p>
+        <p className="text-muted-foreground">
+          Table asosida listing, filter, selection va status ko'rsatish.
+        </p>
       </div>
 
       <DocSection
@@ -61,8 +66,12 @@ const DatatablesPage = () => {
 );`}
         demo={
           <div className="space-y-3">
-            <Input placeholder="Search rows..." value={query} onChange={(event) => setQuery(event.target.value)} />
-            <div className="rounded-md border overflow-hidden">
+            <Input
+              placeholder="Search rows..."
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+            />
+            <div className="overflow-hidden rounded-md border">
               <Table>
                 <TableHeader>
                   <TableRow>
@@ -84,7 +93,9 @@ const DatatablesPage = () => {
                             onCheckedChange={(value) => {
                               const enabled = value === true;
                               setSelected((prev) =>
-                                enabled ? [...prev, row.id] : prev.filter((item) => item !== row.id)
+                                enabled
+                                  ? [...prev, row.id]
+                                  : prev.filter((item) => item !== row.id),
                               );
                             }}
                           />
@@ -93,7 +104,9 @@ const DatatablesPage = () => {
                         <TableCell>{row.email}</TableCell>
                         <TableCell>{row.plan}</TableCell>
                         <TableCell>
-                          <Badge variant={row.status === "Active" ? "default" : "secondary"}>{row.status}</Badge>
+                          <Badge variant={row.status === "Active" ? "default" : "secondary"}>
+                            {row.status}
+                          </Badge>
                         </TableCell>
                       </TableRow>
                     );

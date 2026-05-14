@@ -46,7 +46,10 @@ const Profile = () => {
           </div>
           <div className="space-y-2">
             <Label htmlFor="bio">Bio</Label>
-            <Textarea id="bio" defaultValue="Focused on operations, performance, and platform reliability." />
+            <Textarea
+              id="bio"
+              defaultValue="Focused on operations, performance, and platform reliability."
+            />
           </div>
         </CardContent>
         <CardFooter>
@@ -63,14 +66,18 @@ const Profile = () => {
           <div className="flex items-center justify-between">
             <div>
               <p className="font-medium">Public profile</p>
-              <p className="text-sm text-muted-foreground">Allow your name and role to be visible internally.</p>
+              <p className="text-sm text-muted-foreground">
+                Allow your name and role to be visible internally.
+              </p>
             </div>
             <Switch defaultChecked />
           </div>
           <div className="flex items-center justify-between">
             <div>
               <p className="font-medium">Email updates</p>
-              <p className="text-sm text-muted-foreground">Receive account and security notifications by email.</p>
+              <p className="text-sm text-muted-foreground">
+                Receive account and security notifications by email.
+              </p>
             </div>
             <Switch defaultChecked />
           </div>

@@ -1,5 +1,11 @@
-
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -17,7 +23,7 @@ const Settings = () => {
         <h2 className="text-3xl font-bold tracking-tight">Settings</h2>
         <p className="text-muted-foreground">Manage your account settings and preferences.</p>
       </div>
-      
+
       <Tabs defaultValue="general">
         <TabsList>
           <TabsTrigger value="general">General</TabsTrigger>
@@ -25,32 +31,30 @@ const Settings = () => {
           <TabsTrigger value="appearance">Appearance</TabsTrigger>
           <TabsTrigger value="security">Security</TabsTrigger>
         </TabsList>
-        
-        <TabsContent value="general" className="space-y-4 mt-4">
+
+        <TabsContent value="general" className="mt-4 space-y-4">
           <Card>
             <CardHeader>
               <CardTitle>Profile</CardTitle>
-              <CardDescription>
-                Update your personal information.
-              </CardDescription>
+              <CardDescription>Update your personal information.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="flex flex-col sm:flex-row gap-4">
-                <div className="space-y-2 flex-1">
+              <div className="flex flex-col gap-4 sm:flex-row">
+                <div className="flex-1 space-y-2">
                   <Label htmlFor="firstName">First Name</Label>
                   <Input id="firstName" defaultValue="John" />
                 </div>
-                <div className="space-y-2 flex-1">
+                <div className="flex-1 space-y-2">
                   <Label htmlFor="lastName">Last Name</Label>
                   <Input id="lastName" defaultValue="Doe" />
                 </div>
               </div>
-              
+
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
                 <Input id="email" type="email" defaultValue="john@example.com" />
               </div>
-              
+
               <div className="space-y-2">
                 <Label htmlFor="bio">Bio</Label>
                 <Textarea id="bio" placeholder="Tell us about yourself" />
@@ -60,35 +64,33 @@ const Settings = () => {
               <Button>Save Changes</Button>
             </CardFooter>
           </Card>
-          
+
           <Card>
             <CardHeader>
               <CardTitle>Company Information</CardTitle>
-              <CardDescription>
-                Update your company details and address.
-              </CardDescription>
+              <CardDescription>Update your company details and address.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="companyName">Company Name</Label>
                 <Input id="companyName" defaultValue="Acme Inc" />
               </div>
-              
+
               <div className="space-y-2">
                 <Label htmlFor="address">Address</Label>
                 <Input id="address" defaultValue="123 Main St" />
               </div>
-              
-              <div className="flex flex-col sm:flex-row gap-4">
-                <div className="space-y-2 flex-1">
+
+              <div className="flex flex-col gap-4 sm:flex-row">
+                <div className="flex-1 space-y-2">
                   <Label htmlFor="city">City</Label>
                   <Input id="city" defaultValue="San Francisco" />
                 </div>
-                <div className="space-y-2 flex-1">
+                <div className="flex-1 space-y-2">
                   <Label htmlFor="state">State</Label>
                   <Input id="state" defaultValue="CA" />
                 </div>
-                <div className="space-y-2 flex-1">
+                <div className="flex-1 space-y-2">
                   <Label htmlFor="zip">ZIP Code</Label>
                   <Input id="zip" defaultValue="94103" />
                 </div>
@@ -99,14 +101,12 @@ const Settings = () => {
             </CardFooter>
           </Card>
         </TabsContent>
-        
-        <TabsContent value="notifications" className="space-y-4 mt-4">
+
+        <TabsContent value="notifications" className="mt-4 space-y-4">
           <Card>
             <CardHeader>
               <CardTitle>Notification Preferences</CardTitle>
-              <CardDescription>
-                Choose how you want to be notified.
-              </CardDescription>
+              <CardDescription>Choose how you want to be notified.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-4">
@@ -119,9 +119,9 @@ const Settings = () => {
                   </div>
                   <Switch defaultChecked />
                 </div>
-                
+
                 <Separator />
-                
+
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
                     <Label>SMS Notifications</Label>
@@ -131,9 +131,9 @@ const Settings = () => {
                   </div>
                   <Switch />
                 </div>
-                
+
                 <Separator />
-                
+
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
                     <Label>Browser Notifications</Label>
@@ -143,9 +143,9 @@ const Settings = () => {
                   </div>
                   <Switch defaultChecked />
                 </div>
-                
+
                 <Separator />
-                
+
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
                     <Label>Marketing Communications</Label>
@@ -162,14 +162,12 @@ const Settings = () => {
             </CardFooter>
           </Card>
         </TabsContent>
-        
-        <TabsContent value="appearance" className="space-y-4 mt-4">
+
+        <TabsContent value="appearance" className="mt-4 space-y-4">
           <Card>
             <CardHeader>
               <CardTitle>Theme</CardTitle>
-              <CardDescription>
-                Manage your theme preferences.
-              </CardDescription>
+              <CardDescription>Manage your theme preferences.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-4">
@@ -177,9 +175,9 @@ const Settings = () => {
                   <Label>Application Theme</Label>
                   <ThemeToggle />
                 </div>
-                
+
                 <Separator />
-                
+
                 <div className="space-y-2">
                   <Label>Density</Label>
                   <RadioGroup defaultValue="comfortable">
@@ -200,14 +198,12 @@ const Settings = () => {
             </CardFooter>
           </Card>
         </TabsContent>
-        
-        <TabsContent value="security" className="space-y-4 mt-4">
+
+        <TabsContent value="security" className="mt-4 space-y-4">
           <Card>
             <CardHeader>
               <CardTitle>Change Password</CardTitle>
-              <CardDescription>
-                Update your password.
-              </CardDescription>
+              <CardDescription>Update your password.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
@@ -227,13 +223,11 @@ const Settings = () => {
               <Button>Update Password</Button>
             </CardFooter>
           </Card>
-          
+
           <Card>
             <CardHeader>
               <CardTitle>Two-Factor Authentication</CardTitle>
-              <CardDescription>
-                Add an extra layer of security to your account.
-              </CardDescription>
+              <CardDescription>Add an extra layer of security to your account.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between">

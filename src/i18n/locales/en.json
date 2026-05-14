@@ -1,0 +1,64 @@
+{
+  "common": {
+    "search": "Search",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "loading": "Loading...",
+    "no_results": "No results",
+    "actions": "Actions"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "users": "Users",
+    "products": "Products",
+    "orders": "Orders",
+    "customers": "Customers",
+    "reports": "Reports",
+    "calendar": "Calendar",
+    "messages": "Messages",
+    "notifications": "Notifications",
+    "crud_example": "CRUD Example",
+    "components": "Components",
+    "settings": "Settings",
+    "profile": "Profile",
+    "logout": "Logout"
+  },
+  "login": {
+    "title": "Welcome back",
+    "subtitle": "Sign in to your account",
+    "email": "Email",
+    "password": "Password",
+    "remember_me": "Remember me",
+    "forgot_password": "Forgot password?",
+    "submit": "Sign in",
+    "submitting": "Signing in...",
+    "invalid_credentials": "Invalid email or password",
+    "email_required": "Email is required",
+    "email_invalid": "Please enter a valid email",
+    "password_required": "Password is required"
+  },
+  "forgot_password": {
+    "title": "Reset password",
+    "subtitle": "Enter your email and we'll send a reset link",
+    "email": "Email",
+    "submit": "Send reset link",
+    "success": "If that email exists, we sent a reset link.",
+    "back_to_login": "Back to login"
+  },
+  "errors": {
+    "generic": "Something went wrong",
+    "network": "Network error. Please try again.",
+    "unauthorized": "You are not authorized",
+    "not_found": "Not found",
+    "validation": "Validation failed"
+  },
+  "theme": {
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "language": "Language"
+}

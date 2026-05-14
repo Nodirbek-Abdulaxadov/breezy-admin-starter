@@ -4,11 +4,31 @@ import { Button } from "@/components/ui/button";
 
 const docs = [
   { title: "Buttons", to: "/components/buttons", description: "Variant, size va action tugmalar." },
-  { title: "Forms", to: "/components/forms", description: "react-hook-form + zod validatsiya patternlari." },
-  { title: "Inputs", to: "/components/inputs", description: "Input, textarea, select, switch, checkbox, radio." },
-  { title: "Dialogs", to: "/components/dialogs", description: "Dialog va AlertDialog ishlatish usullari." },
-  { title: "Datatables", to: "/components/datatables", description: "Table, filter, row actions va selection." },
-  { title: "Misc", to: "/components/misc", description: "Badge, tabs, toast kabi qo'shimcha komponentlar." },
+  {
+    title: "Forms",
+    to: "/components/forms",
+    description: "react-hook-form + zod validatsiya patternlari.",
+  },
+  {
+    title: "Inputs",
+    to: "/components/inputs",
+    description: "Input, textarea, select, switch, checkbox, radio.",
+  },
+  {
+    title: "Dialogs",
+    to: "/components/dialogs",
+    description: "Dialog va AlertDialog ishlatish usullari.",
+  },
+  {
+    title: "Datatables",
+    to: "/components/datatables",
+    description: "Table, filter, row actions va selection.",
+  },
+  {
+    title: "Misc",
+    to: "/components/misc",
+    description: "Badge, tabs, toast kabi qo'shimcha komponentlar.",
+  },
 ];
 
 const ComponentsOverview = () => {

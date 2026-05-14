@@ -41,7 +41,13 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const PAGE_SIZE = 5;
 
@@ -71,7 +77,11 @@ const Orders = () => {
     date: "2026-04-02",
   });
 
-  const { data: orders = [], isLoading, isError } = useQuery({
+  const {
+    data: orders = [],
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: ["orders"],
     queryFn: dataService.getOrders,
   });
@@ -128,7 +138,9 @@ const Orders = () => {
     setLocalOrders((prev) => {
       const source = prev.length ? prev : orders;
       if (editingOrder) {
-        return source.map((item) => (item.id === editingOrder.id ? { ...item, ...formData } : item));
+        return source.map((item) =>
+          item.id === editingOrder.id ? { ...item, ...formData } : item,
+        );
       }
 
       const nextId = `#ORD-${(9000 + source.length + 1).toString()}`;
@@ -167,36 +179,46 @@ const Orders = () => {
         <Card>
           <CardHeader className="pb-2">
             <CardDescription>Pending Fulfillment</CardDescription>
-            <CardTitle>{isLoading ? "-" : filteredOrders.filter((item) => item.fulfillment === "Processing").length}</CardTitle>
+            <CardTitle>
+              {isLoading
+                ? "-"
+                : filteredOrders.filter((item) => item.fulfillment === "Processing").length}
+            </CardTitle>
           </CardHeader>
         </Card>
         <Card>
           <CardHeader className="pb-2">
             <CardDescription>Paid Orders</CardDescription>
-            <CardTitle>{isLoading ? "-" : filteredOrders.filter((item) => item.payment === "Paid").length}</CardTitle>
+            <CardTitle>
+              {isLoading ? "-" : filteredOrders.filter((item) => item.payment === "Paid").length}
+            </CardTitle>
           </CardHeader>
         </Card>
         <Card>
           <CardHeader className="pb-2">
             <CardDescription>Refund Requests</CardDescription>
-            <CardTitle>{isLoading ? "-" : filteredOrders.filter((item) => item.payment === "Refunded").length}</CardTitle>
+            <CardTitle>
+              {isLoading
+                ? "-"
+                : filteredOrders.filter((item) => item.payment === "Refunded").length}
+            </CardTitle>
           </CardHeader>
         </Card>
       </div>
 
       <Card>
         <CardHeader className="flex flex-col gap-4">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <CardTitle>Recent Orders</CardTitle>
               <CardDescription>Latest transactions and fulfillment state</CardDescription>
             </div>
             <Button onClick={openCreate}>
-              <Plus className="h-4 w-4 mr-2" />
+              <Plus className="mr-2 h-4 w-4" />
               Create Order
             </Button>
           </div>
-          <div className="flex flex-col sm:flex-row gap-2">
+          <div className="flex flex-col gap-2 sm:flex-row">
             <div className="relative sm:w-[240px]">
               <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
               <Input
@@ -229,7 +251,7 @@ const Orders = () => {
           </div>
         </CardHeader>
         <CardContent>
-          <div className="rounded-md border overflow-hidden">
+          <div className="overflow-hidden rounded-md border">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -243,15 +265,15 @@ const Orders = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {isLoading ? (
-                  Array.from({ length: 4 }).map((_, index) => (
-                    <TableRow key={`orders-skeleton-${index}`}>
-                      <TableCell colSpan={7}>
-                        <Skeleton className="h-5 w-full" />
-                      </TableCell>
-                    </TableRow>
-                  ))
-                ) : null}
+                {isLoading
+                  ? Array.from({ length: 4 }).map((_, index) => (
+                      <TableRow key={`orders-skeleton-${index}`}>
+                        <TableCell colSpan={7}>
+                          <Skeleton className="h-5 w-full" />
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  : null}
                 {isError ? (
                   <TableRow>
                     <TableCell colSpan={7} className="text-center text-destructive">
@@ -277,8 +299,13 @@ const Orders = () => {
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                          <DropdownMenuItem onClick={() => openEdit(order)}>Edit order</DropdownMenuItem>
-                          <DropdownMenuItem className="text-destructive" onClick={() => setDeleteTarget(order)}>
+                          <DropdownMenuItem onClick={() => openEdit(order)}>
+                            Edit order
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            className="text-destructive"
+                            onClick={() => setDeleteTarget(order)}
+                          >
                             Delete order
                           </DropdownMenuItem>
                         </DropdownMenuContent>
@@ -302,10 +329,20 @@ const Orders = () => {
               {(currentPage - 1) * PAGE_SIZE + pagedOrders.length} of {filteredOrders.length}
             </p>
             <div className="flex gap-2">
-              <Button variant="outline" size="sm" disabled={currentPage <= 1} onClick={() => setPage((prev) => prev - 1)}>
+              <Button
+                variant="outline"
+                size="sm"
+                disabled={currentPage <= 1}
+                onClick={() => setPage((prev) => prev - 1)}
+              >
                 Previous
               </Button>
-              <Button variant="outline" size="sm" disabled={currentPage >= totalPages} onClick={() => setPage((prev) => prev + 1)}>
+              <Button
+                variant="outline"
+                size="sm"
+                disabled={currentPage >= totalPages}
+                onClick={() => setPage((prev) => prev + 1)}
+              >
                 Next
               </Button>
             </div>
@@ -324,16 +361,31 @@ const Orders = () => {
           <div className="space-y-3">
             <div className="space-y-2">
               <Label>Customer</Label>
-              <Input value={formData.customer} onChange={(event) => setFormData((prev) => ({ ...prev, customer: event.target.value }))} />
+              <Input
+                value={formData.customer}
+                onChange={(event) =>
+                  setFormData((prev) => ({ ...prev, customer: event.target.value }))
+                }
+              />
             </div>
             <div className="space-y-2">
               <Label>Total</Label>
-              <Input value={formData.total} onChange={(event) => setFormData((prev) => ({ ...prev, total: event.target.value }))} />
+              <Input
+                value={formData.total}
+                onChange={(event) =>
+                  setFormData((prev) => ({ ...prev, total: event.target.value }))
+                }
+              />
             </div>
             <div className="grid gap-3 sm:grid-cols-2">
               <div className="space-y-2">
                 <Label>Payment</Label>
-                <Select value={formData.payment} onValueChange={(value: PaymentStatus) => setFormData((prev) => ({ ...prev, payment: value }))}>
+                <Select
+                  value={formData.payment}
+                  onValueChange={(value: PaymentStatus) =>
+                    setFormData((prev) => ({ ...prev, payment: value }))
+                  }
+                >
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
@@ -346,16 +398,27 @@ const Orders = () => {
               </div>
               <div className="space-y-2">
                 <Label>Fulfillment</Label>
-                <Input value={formData.fulfillment} onChange={(event) => setFormData((prev) => ({ ...prev, fulfillment: event.target.value }))} />
+                <Input
+                  value={formData.fulfillment}
+                  onChange={(event) =>
+                    setFormData((prev) => ({ ...prev, fulfillment: event.target.value }))
+                  }
+                />
               </div>
             </div>
             <div className="space-y-2">
               <Label>Date</Label>
-              <Input type="date" value={formData.date} onChange={(event) => setFormData((prev) => ({ ...prev, date: event.target.value }))} />
+              <Input
+                type="date"
+                value={formData.date}
+                onChange={(event) => setFormData((prev) => ({ ...prev, date: event.target.value }))}
+              />
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setFormOpen(false)}>Cancel</Button>
+            <Button variant="outline" onClick={() => setFormOpen(false)}>
+              Cancel
+            </Button>
             <Button onClick={submitForm}>{editingOrder ? "Update" : "Create"}</Button>
           </DialogFooter>
         </DialogContent>

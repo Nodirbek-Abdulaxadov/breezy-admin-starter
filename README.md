@@ -1,6 +1,26 @@
-# Breezy Admin Starter
+# Breezy Admin
 
-A production-ready React admin dashboard starter template built with Vite, TypeScript, shadcn/ui, and Tailwind CSS.
+A production-ready React admin dashboard starter built with Vite, TypeScript, shadcn/ui, and Tailwind CSS.
+
+---
+
+## Features
+
+- Vite + React 18 + TypeScript
+- shadcn/ui component library on top of Radix primitives
+- Tailwind CSS with design tokens and `tailwindcss-animate`
+- React Router v6 with nested layouts
+- TanStack Query v5 for async state and caching
+- React Hook Form + Zod for type-safe forms and validation
+- Type-safe API client with a single source of truth for endpoints
+- Mock-API toggle (`VITE_USE_MOCK_API`) for local prototyping without a backend
+- i18n with English and Uzbek locales
+- Dark mode via `next-themes`
+- Mobile-first responsive layout (collapsible sidebar, adaptive topbar)
+- Generic `DataTable` with sorting, pagination, and column controls
+- `ProtectedRoute` guard backed by `AuthContext`
+- Global `ErrorBoundary` with graceful fallback UI
+- Prettier + Husky + lint-staged pre-commit pipeline
 
 ---
 
@@ -10,152 +30,109 @@ A production-ready React admin dashboard starter template built with Vite, TypeS
 # 1. Clone the repository
 git clone <YOUR_GIT_URL>
 
-# 2. Navigate to the project directory
-cd <YOUR_PROJECT_NAME>
+# 2. Enter the project directory
+cd breezy-admin-starter
 
-# 3. Install dependencies (Node.js ≥ 18 required)
+# 3. Install dependencies (Node.js >= 18)
 npm install        # or: bun install
 
-# 4. Start the development server
+# 4. Configure environment
+cp .env.example .env
+
+# 5. Start the development server
 npm run dev        # or: bun dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173) in your browser.
-
-**Default credentials** — any email / any password (auth is mocked).
+Open http://localhost:8080 in your browser.
 
 ---
 
-## Project Structure
+## Environment Variables
+
+| Variable             | Required | Default                       | Description                                                                 |
+| -------------------- | -------- | ----------------------------- | --------------------------------------------------------------------------- |
+| `VITE_API_URL`       | yes      | `http://localhost:5000/api`   | Backend API base URL (no trailing slash).                                   |
+| `VITE_USE_MOCK_API`  | no       | `true`                        | When `true`, services use the in-memory mock API instead of `VITE_API_URL`. |
+| `VITE_APP_NAME`      | no       | `Breezy Admin`                | Application name shown in the topbar and document title.                    |
+
+---
+
+## Folder Structure
 
 ```
 src/
 ├── components/
 │   ├── auth/          # ProtectedRoute wrapper
 │   ├── layout/        # AppLayout, Sidebar, Topbar, Footer, ThemeProvider
-│   └── ui/            # shadcn/ui primitives (button, dialog, table …)
-├── context/           # AuthContext
-├── hooks/             # use-mobile, use-toast
-├── lib/               # utils (cn helper)
+│   ├── shared/        # DataTable, ErrorBoundary, reusable widgets
+│   └── ui/            # shadcn/ui primitives (button, dialog, table, ...)
+├── context/           # AuthContext and other React contexts
+├── hooks/             # Reusable hooks (use-mobile, use-toast, ...)
+├── i18n/              # Translation resources (en, uz)
+├── lib/               # Utilities (cn helper, formatters, validators)
 ├── pages/             # One file per route
 │   └── components/    # UI component showcase pages
-├── services/
-│   ├── dataService.ts # Read-only mock data for Products & Orders
-│   └── mockApi.ts     # In-memory CRUD mock API (see below)
-└── types/
-    └── data.ts        # Shared TypeScript interfaces
+├── services/          # API client, mockApi, domain services
+└── types/             # Shared TypeScript interfaces
 ```
 
 ---
 
-## Pages & Routes
+## Routing
 
-| Route | Page | Description |
-|-------|------|-------------|
-| `/` | Dashboard | KPI cards, charts, activity feed |
-| `/users` | Users | User list |
-| `/products` | Products | Product catalog with CRUD |
-| `/orders` | Orders | Order management |
-| `/customers` | Customers | Customer records |
-| `/reports` | Reports | Analytics & reports |
-| `/calendar` | Calendar | Event calendar |
-| `/messages` | Messages | Inbox |
-| `/notifications` | Notifications | Notification center |
-| `/crud-example` | **CRUD Example** | Full Create/Read/Update/Delete demo |
-| `/components/*` | Components | UI component showcase |
-| `/settings` | Settings | App settings |
-| `/profile` | Profile | User profile |
-| `/login` | Login | Auth page |
-
----
-
-## CRUD Example (Mock API)
-
-The **CRUD Example** page (`/crud-example`) demonstrates how to wire up full Create / Read / Update / Delete operations against a simulated REST back-end.
-
-### Mock API — `src/services/mockApi.ts`
-
-The mock API maintains an **in-memory store** that survives navigation but resets on hard refresh — ideal for prototyping before connecting a real back-end.
-
-```ts
-import { mockApi } from "@/services/mockApi";
-
-// READ — GET /employees
-const employees = await mockApi.employees.list();
-
-// CREATE — POST /employees
-const created = await mockApi.employees.create({
-  name: "Jane Doe",
-  email: "jane@example.com",
-  role: "Designer",
-  department: "Design",
-  status: "Active",
-});
-
-// UPDATE — PUT /employees/:id
-const updated = await mockApi.employees.update(created.id, {
-  ...created,
-  role: "Senior Designer",
-});
-
-// DELETE — DELETE /employees/:id
-await mockApi.employees.delete(created.id);
-```
-
-Each method adds a small artificial delay (400 ms) to simulate real network latency.
-
-### React Query integration
-
-The CRUD page uses `@tanstack/react-query` for data fetching and cache management:
-
-```tsx
-// Fetch list
-const { data: employees, isLoading } = useQuery({
-  queryKey: ["employees"],
-  queryFn: () => mockApi.employees.list(),
-});
-
-// Mutate + invalidate cache
-const createMutation = useMutation({
-  mutationFn: (data) => mockApi.employees.create(data),
-  onSuccess: () => queryClient.invalidateQueries({ queryKey: ["employees"] }),
-});
-```
-
-### Replacing with a real API
-
-Swap the `mockApi` calls in `src/services/mockApi.ts` with `fetch` / `axios` calls pointing at your real endpoints. The page component and React Query hooks require **no changes**.
+| Route              | Page              | Description                                  |
+| ------------------ | ----------------- | -------------------------------------------- |
+| `/`                | Dashboard         | KPI cards, charts, activity feed             |
+| `/users`           | Users             | User management                              |
+| `/products`        | Products          | Product catalog                              |
+| `/orders`          | Orders            | Order management                             |
+| `/customers`       | Customers         | Customer records                             |
+| `/reports`         | Reports           | Analytics and reports                        |
+| `/calendar`        | Calendar          | Event calendar                               |
+| `/messages`        | Messages          | Inbox                                        |
+| `/notifications`   | Notifications     | Notification center                          |
+| `/crud-example`    | CRUD Example      | Full create / read / update / delete demo    |
+| `/components/*`    | Components        | UI component showcase                        |
+| `/settings`        | Settings          | Application settings                         |
+| `/profile`         | Profile           | User profile                                 |
+| `/login`           | Login             | Authentication page                          |
 
 ---
 
-## Technologies
+## Mock vs Real API
 
-| Tool | Purpose |
-|------|---------|
-| [Vite](https://vitejs.dev/) | Build tool & dev server |
-| [React 18](https://react.dev/) | UI framework |
-| [TypeScript](https://www.typescriptlang.org/) | Type safety |
-| [shadcn/ui](https://ui.shadcn.com/) | Accessible UI components |
-| [Tailwind CSS](https://tailwindcss.com/) | Utility-first styling |
-| [React Router v6](https://reactrouter.com/) | Client-side routing |
-| [TanStack Query v5](https://tanstack.com/query) | Async state & cache |
-| [Lucide React](https://lucide.dev/) | Icon set |
+The data layer reads `VITE_USE_MOCK_API` at boot:
+
+- `VITE_USE_MOCK_API=true` — every service call is routed to `src/services/mockApi.ts`, an in-memory store with simulated latency. Useful for local development and UI work before a backend exists.
+- `VITE_USE_MOCK_API=false` — services use the typed API client and hit `VITE_API_URL`. Endpoints, request shapes, and response types stay identical, so toggling the flag does not require changes to pages, hooks, or components.
+
+This keeps prototyping and production code paths in sync and avoids parallel implementations.
 
 ---
 
 ## Available Scripts
 
-```sh
-npm run dev      # Start development server
-npm run build    # Production build → dist/
-npm run preview  # Preview production build locally
-npm run lint     # ESLint
-```
+| Command             | Description                                    |
+| ------------------- | ---------------------------------------------- |
+| `npm run dev`       | Start the Vite dev server                      |
+| `npm run build`     | Production build to `dist/`                    |
+| `npm run preview`   | Preview the production build locally           |
+| `npm run lint`      | Run ESLint across the project                  |
+| `npm run format`    | Format `src/` with Prettier                    |
+| `npm run typecheck` | Run `tsc --noEmit` for a strict type check     |
 
 ---
 
 ## Deployment
 
-Build the project with `npm run build` and deploy the `dist/` folder to any static host (Vercel, Netlify, GitHub Pages, etc.).
+1. Set the required environment variables on the target platform.
+2. Run `npm run build` to produce the `dist/` directory.
+3. Serve `dist/` from any static host (Vercel, Netlify, Cloudflare Pages, S3 + CloudFront, Nginx, etc.).
 
-For Lovable users: open the [Lovable Project](https://lovable.dev/projects/29346176-0020-48eb-aca2-ff3a34991216) and click **Share → Publish**.
+For SPA routing, ensure the host rewrites unknown paths to `index.html`.
+
+---
+
+## License
+
+TBD.

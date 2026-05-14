@@ -1,12 +1,13 @@
-
 import { Suspense, lazy } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AppLayout from "./components/layout/AppLayout";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
+import { ErrorBoundary } from "./components/common/ErrorBoundary";
+import { queryClient } from "./lib/queryClient";
 
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Users = lazy(() => import("./pages/Users"));
@@ -31,47 +32,53 @@ const Login = lazy(() => import("./pages/Login"));
 const ForgotPassword = lazy(() => import("./pages/ForgotPassword"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
-const queryClient = new QueryClient();
+const RouteFallback = () => (
+  <div className="flex min-h-screen items-center justify-center text-sm text-muted-foreground">
+    Loading…
+  </div>
+);
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Suspense fallback={<div className="min-h-screen flex items-center justify-center text-sm text-muted-foreground">Loading...</div>}>
-          <Routes>
-            <Route element={<ProtectedRoute />}>
-              <Route element={<AppLayout />}>
-                <Route path="/" element={<Dashboard />} />
-                <Route path="/users" element={<Users />} />
-                <Route path="/products" element={<Products />} />
-                <Route path="/orders" element={<Orders />} />
-                <Route path="/customers" element={<Customers />} />
-                <Route path="/components" element={<ComponentsOverview />} />
-                <Route path="/components/buttons" element={<ButtonsPage />} />
-                <Route path="/components/forms" element={<FormsPage />} />
-                <Route path="/components/inputs" element={<InputsPage />} />
-                <Route path="/components/dialogs" element={<DialogsPage />} />
-                <Route path="/components/datatables" element={<DatatablesPage />} />
-                <Route path="/components/misc" element={<MiscComponentsPage />} />
-                <Route path="/reports" element={<Reports />} />
-                <Route path="/calendar" element={<CalendarPage />} />
-                <Route path="/messages" element={<Messages />} />
-                <Route path="/notifications" element={<Notifications />} />
-                <Route path="/settings" element={<Settings />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/crud-example" element={<CrudExample />} />
+  <ErrorBoundary>
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Suspense fallback={<RouteFallback />}>
+            <Routes>
+              <Route element={<ProtectedRoute />}>
+                <Route element={<AppLayout />}>
+                  <Route path="/" element={<Dashboard />} />
+                  <Route path="/users" element={<Users />} />
+                  <Route path="/products" element={<Products />} />
+                  <Route path="/orders" element={<Orders />} />
+                  <Route path="/customers" element={<Customers />} />
+                  <Route path="/components" element={<ComponentsOverview />} />
+                  <Route path="/components/buttons" element={<ButtonsPage />} />
+                  <Route path="/components/forms" element={<FormsPage />} />
+                  <Route path="/components/inputs" element={<InputsPage />} />
+                  <Route path="/components/dialogs" element={<DialogsPage />} />
+                  <Route path="/components/datatables" element={<DatatablesPage />} />
+                  <Route path="/components/misc" element={<MiscComponentsPage />} />
+                  <Route path="/reports" element={<Reports />} />
+                  <Route path="/calendar" element={<CalendarPage />} />
+                  <Route path="/messages" element={<Messages />} />
+                  <Route path="/notifications" element={<Notifications />} />
+                  <Route path="/settings" element={<Settings />} />
+                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/crud-example" element={<CrudExample />} />
+                </Route>
               </Route>
-            </Route>
-            <Route path="/login" element={<Login />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Suspense>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
+              <Route path="/login" element={<Login />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
+  </ErrorBoundary>
 );
 
 export default App;

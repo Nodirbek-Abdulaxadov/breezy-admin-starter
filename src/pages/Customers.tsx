@@ -38,7 +38,13 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 type Tier = "Enterprise" | "Business" | "Starter";
 
@@ -52,10 +58,38 @@ type CustomerItem = {
 };
 
 const initialCustomers: CustomerItem[] = [
-  { id: 1, name: "Acme Corp", contact: "ops@acme.com", tier: "Enterprise", spend: "$12,400", health: 88 },
-  { id: 2, name: "Globex Ltd", contact: "team@globex.io", tier: "Business", spend: "$6,120", health: 73 },
-  { id: 3, name: "Initech", contact: "procurement@initech.com", tier: "Enterprise", spend: "$9,780", health: 92 },
-  { id: 4, name: "Umbrella Inc", contact: "admin@umbrella.co", tier: "Starter", spend: "$1,430", health: 54 },
+  {
+    id: 1,
+    name: "Acme Corp",
+    contact: "ops@acme.com",
+    tier: "Enterprise",
+    spend: "$12,400",
+    health: 88,
+  },
+  {
+    id: 2,
+    name: "Globex Ltd",
+    contact: "team@globex.io",
+    tier: "Business",
+    spend: "$6,120",
+    health: 73,
+  },
+  {
+    id: 3,
+    name: "Initech",
+    contact: "procurement@initech.com",
+    tier: "Enterprise",
+    spend: "$9,780",
+    health: 92,
+  },
+  {
+    id: 4,
+    name: "Umbrella Inc",
+    contact: "admin@umbrella.co",
+    tier: "Starter",
+    spend: "$1,430",
+    health: 54,
+  },
 ];
 
 const PAGE_SIZE = 5;
@@ -80,7 +114,8 @@ const Customers = () => {
     const query = search.trim().toLowerCase();
     return customers.filter((item) => {
       const searchMatched =
-        !query || [item.name, item.contact, item.tier, item.spend].join(" ").toLowerCase().includes(query);
+        !query ||
+        [item.name, item.contact, item.tier, item.spend].join(" ").toLowerCase().includes(query);
       const tierMatched = tierFilter === "all" || item.tier === tierFilter;
       return searchMatched && tierMatched;
     });
@@ -88,7 +123,10 @@ const Customers = () => {
 
   const totalPages = Math.max(1, Math.ceil(filteredCustomers.length / PAGE_SIZE));
   const currentPage = Math.min(page, totalPages);
-  const pagedCustomers = filteredCustomers.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+  const pagedCustomers = filteredCustomers.slice(
+    (currentPage - 1) * PAGE_SIZE,
+    currentPage * PAGE_SIZE,
+  );
 
   const openCreate = () => {
     setEditingCustomer(null);
@@ -119,7 +157,9 @@ const Customers = () => {
       return;
     }
     if (editingCustomer) {
-      setCustomers((prev) => prev.map((item) => (item.id === editingCustomer.id ? { ...item, ...formData } : item)));
+      setCustomers((prev) =>
+        prev.map((item) => (item.id === editingCustomer.id ? { ...item, ...formData } : item)),
+      );
     } else {
       const nextId = customers.length ? Math.max(...customers.map((item) => item.id)) + 1 : 1;
       setCustomers((prev) => [{ id: nextId, ...formData }, ...prev]);
@@ -153,7 +193,9 @@ const Customers = () => {
         <Card>
           <CardHeader className="pb-2">
             <CardDescription>Enterprise Accounts</CardDescription>
-            <CardTitle>{filteredCustomers.filter((item) => item.tier === "Enterprise").length}</CardTitle>
+            <CardTitle>
+              {filteredCustomers.filter((item) => item.tier === "Enterprise").length}
+            </CardTitle>
           </CardHeader>
         </Card>
         <Card>
@@ -166,7 +208,7 @@ const Customers = () => {
 
       <Card>
         <CardHeader className="flex flex-col gap-4">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <CardTitle>Customer Accounts</CardTitle>
               <CardDescription>Manage customer tiers and account health</CardDescription>
@@ -176,7 +218,7 @@ const Customers = () => {
               Add Customer
             </Button>
           </div>
-          <div className="flex flex-col sm:flex-row gap-2">
+          <div className="flex flex-col gap-2 sm:flex-row">
             <div className="relative sm:w-[260px]">
               <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
               <Input
@@ -209,7 +251,7 @@ const Customers = () => {
           </div>
         </CardHeader>
         <CardContent>
-          <div className="rounded-md border overflow-hidden">
+          <div className="overflow-hidden rounded-md border">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -248,8 +290,13 @@ const Customers = () => {
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                          <DropdownMenuItem onClick={() => openEdit(customer)}>Edit customer</DropdownMenuItem>
-                          <DropdownMenuItem className="text-destructive" onClick={() => setDeleteTarget(customer)}>
+                          <DropdownMenuItem onClick={() => openEdit(customer)}>
+                            Edit customer
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            className="text-destructive"
+                            onClick={() => setDeleteTarget(customer)}
+                          >
                             Delete customer
                           </DropdownMenuItem>
                         </DropdownMenuContent>
@@ -273,10 +320,20 @@ const Customers = () => {
               {(currentPage - 1) * PAGE_SIZE + pagedCustomers.length} of {filteredCustomers.length}
             </p>
             <div className="flex gap-2">
-              <Button variant="outline" size="sm" disabled={currentPage <= 1} onClick={() => setPage((prev) => prev - 1)}>
+              <Button
+                variant="outline"
+                size="sm"
+                disabled={currentPage <= 1}
+                onClick={() => setPage((prev) => prev - 1)}
+              >
                 Previous
               </Button>
-              <Button variant="outline" size="sm" disabled={currentPage >= totalPages} onClick={() => setPage((prev) => prev + 1)}>
+              <Button
+                variant="outline"
+                size="sm"
+                disabled={currentPage >= totalPages}
+                onClick={() => setPage((prev) => prev + 1)}
+              >
                 Next
               </Button>
             </div>
@@ -289,22 +346,35 @@ const Customers = () => {
           <DialogHeader>
             <DialogTitle>{editingCustomer ? "Update customer" : "Create customer"}</DialogTitle>
             <DialogDescription>
-              {editingCustomer ? "Update customer account details." : "Fill details to add a new customer."}
+              {editingCustomer
+                ? "Update customer account details."
+                : "Fill details to add a new customer."}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-3">
             <div className="space-y-2">
               <Label>Name</Label>
-              <Input value={formData.name} onChange={(event) => setFormData((prev) => ({ ...prev, name: event.target.value }))} />
+              <Input
+                value={formData.name}
+                onChange={(event) => setFormData((prev) => ({ ...prev, name: event.target.value }))}
+              />
             </div>
             <div className="space-y-2">
               <Label>Contact</Label>
-              <Input value={formData.contact} onChange={(event) => setFormData((prev) => ({ ...prev, contact: event.target.value }))} />
+              <Input
+                value={formData.contact}
+                onChange={(event) =>
+                  setFormData((prev) => ({ ...prev, contact: event.target.value }))
+                }
+              />
             </div>
             <div className="grid gap-3 sm:grid-cols-2">
               <div className="space-y-2">
                 <Label>Tier</Label>
-                <Select value={formData.tier} onValueChange={(value: Tier) => setFormData((prev) => ({ ...prev, tier: value }))}>
+                <Select
+                  value={formData.tier}
+                  onValueChange={(value: Tier) => setFormData((prev) => ({ ...prev, tier: value }))}
+                >
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
@@ -322,17 +392,26 @@ const Customers = () => {
                   min={0}
                   max={100}
                   value={formData.health}
-                  onChange={(event) => setFormData((prev) => ({ ...prev, health: Number(event.target.value) }))}
+                  onChange={(event) =>
+                    setFormData((prev) => ({ ...prev, health: Number(event.target.value) }))
+                  }
                 />
               </div>
             </div>
             <div className="space-y-2">
               <Label>Lifetime Spend</Label>
-              <Input value={formData.spend} onChange={(event) => setFormData((prev) => ({ ...prev, spend: event.target.value }))} />
+              <Input
+                value={formData.spend}
+                onChange={(event) =>
+                  setFormData((prev) => ({ ...prev, spend: event.target.value }))
+                }
+              />
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setFormOpen(false)}>Cancel</Button>
+            <Button variant="outline" onClick={() => setFormOpen(false)}>
+              Cancel
+            </Button>
             <Button onClick={submitForm}>{editingCustomer ? "Update" : "Create"}</Button>
           </DialogFooter>
         </DialogContent>

@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 export const CodeBlock = ({ code }: { code: string }) => (
-  <pre className="rounded-md border bg-muted p-3 text-xs overflow-x-auto">
+  <pre className="overflow-x-auto rounded-md border bg-muted p-3 text-xs">
     <code>{code}</code>
   </pre>
 );

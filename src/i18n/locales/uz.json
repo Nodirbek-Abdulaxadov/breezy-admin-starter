@@ -1,0 +1,64 @@
+{
+  "common": {
+    "search": "Qidirish",
+    "save": "Saqlash",
+    "cancel": "Bekor qilish",
+    "delete": "O'chirish",
+    "edit": "Tahrirlash",
+    "create": "Yaratish",
+    "loading": "Yuklanmoqda...",
+    "no_results": "Natija yo'q",
+    "actions": "Amallar"
+  },
+  "nav": {
+    "dashboard": "Boshqaruv",
+    "users": "Foydalanuvchilar",
+    "products": "Mahsulotlar",
+    "orders": "Buyurtmalar",
+    "customers": "Mijozlar",
+    "reports": "Hisobotlar",
+    "calendar": "Kalendar",
+    "messages": "Xabarlar",
+    "notifications": "Bildirishnomalar",
+    "crud_example": "CRUD misol",
+    "components": "Komponentlar",
+    "settings": "Sozlamalar",
+    "profile": "Profil",
+    "logout": "Chiqish"
+  },
+  "login": {
+    "title": "Xush kelibsiz",
+    "subtitle": "Hisobingizga kiring",
+    "email": "Email",
+    "password": "Parol",
+    "remember_me": "Eslab qol",
+    "forgot_password": "Parolni unutdingizmi?",
+    "submit": "Kirish",
+    "submitting": "Kirilmoqda...",
+    "invalid_credentials": "Email yoki parol noto'g'ri",
+    "email_required": "Email kerak",
+    "email_invalid": "To'g'ri email kiriting",
+    "password_required": "Parol kerak"
+  },
+  "forgot_password": {
+    "title": "Parolni tiklash",
+    "subtitle": "Email manzilingizni kiriting, biz havola yuboramiz",
+    "email": "Email",
+    "submit": "Havola yuborish",
+    "success": "Agar email mavjud bo'lsa, havola yubordik.",
+    "back_to_login": "Loginga qaytish"
+  },
+  "errors": {
+    "generic": "Nimadir xato ketdi",
+    "network": "Tarmoq xatosi. Qayta urinib ko'ring.",
+    "unauthorized": "Sizda ruxsat yo'q",
+    "not_found": "Topilmadi",
+    "validation": "Tekshiruvda xato"
+  },
+  "theme": {
+    "light": "Yorug'",
+    "dark": "Qora",
+    "system": "Tizim"
+  },
+  "language": "Til"
+}

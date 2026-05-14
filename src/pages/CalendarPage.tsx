@@ -1,12 +1,6 @@
 import { useState } from "react";
 import { Calendar } from "@/components/ui/calendar";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 
@@ -48,9 +42,7 @@ const CalendarPage = () => {
     <div className="space-y-6">
       <div>
         <h2 className="text-3xl font-bold tracking-tight">Calendar</h2>
-        <p className="text-muted-foreground">
-          Track meetings, milestones, and upcoming events.
-        </p>
+        <p className="text-muted-foreground">Track meetings, milestones, and upcoming events.</p>
       </div>
 
       <div className="grid gap-4 lg:grid-cols-[420px_1fr]">

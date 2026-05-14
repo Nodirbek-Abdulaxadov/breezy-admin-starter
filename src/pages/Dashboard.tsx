@@ -1,41 +1,48 @@
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { ArrowUpRight, Users, DollarSign, ArrowDownRight, BarChart, LineChart, PieChart } from "lucide-react";
+import {
+  ArrowUpRight,
+  Users,
+  DollarSign,
+  ArrowDownRight,
+  BarChart,
+  LineChart,
+  PieChart,
+} from "lucide-react";
 
 const stats = [
-  { 
-    title: "Total Users", 
-    value: "12,345", 
-    change: "+12%", 
+  {
+    title: "Total Users",
+    value: "12,345",
+    change: "+12%",
     trend: "up",
-    description: "vs. previous month", 
-    icon: Users 
+    description: "vs. previous month",
+    icon: Users,
   },
-  { 
-    title: "Revenue", 
-    value: "$45,231", 
-    change: "+8.2%", 
+  {
+    title: "Revenue",
+    value: "$45,231",
+    change: "+8.2%",
     trend: "up",
-    description: "vs. previous month", 
-    icon: DollarSign 
+    description: "vs. previous month",
+    icon: DollarSign,
   },
-  { 
-    title: "Active Sessions", 
-    value: "1,234", 
-    change: "-4.5%", 
+  {
+    title: "Active Sessions",
+    value: "1,234",
+    change: "-4.5%",
     trend: "down",
-    description: "vs. previous month", 
-    icon: BarChart 
+    description: "vs. previous month",
+    icon: BarChart,
   },
-  { 
-    title: "Conversion Rate", 
-    value: "2.5%", 
-    change: "+3.2%", 
+  {
+    title: "Conversion Rate",
+    value: "2.5%",
+    change: "+3.2%",
     trend: "up",
-    description: "vs. previous month", 
-    icon: LineChart 
-  }
+    description: "vs. previous month",
+    icon: LineChart,
+  },
 ];
 
 const Dashboard = () => {
@@ -45,7 +52,7 @@ const Dashboard = () => {
         <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
         <p className="text-muted-foreground">Overview of your analytics and performance.</p>
       </div>
-      
+
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {stats.map((stat, i) => (
           <Card key={i}>
@@ -61,46 +68,46 @@ const Dashboard = () => {
                 ) : (
                   <ArrowDownRight className="mr-1 h-3 w-3 text-foreground" />
                 )}
-                <span className="text-foreground">
-                  {stat.change}
-                </span>
-                <span className="text-muted-foreground ml-1">
-                  {stat.description}
-                </span>
+                <span className="text-foreground">{stat.change}</span>
+                <span className="ml-1 text-muted-foreground">{stat.description}</span>
               </div>
             </CardContent>
           </Card>
         ))}
       </div>
-      
+
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
         <Card className="lg:col-span-4">
           <CardHeader>
             <CardTitle>Weekly Overview</CardTitle>
             <CardDescription>Sales performance for the past week</CardDescription>
           </CardHeader>
-          <CardContent className="h-[300px] flex items-center justify-center border-t pt-4">
+          <CardContent className="flex h-[300px] items-center justify-center border-t pt-4">
             <div className="text-center">
-              <LineChart className="h-16 w-16 text-muted-foreground/60 mx-auto mb-2" />
-              <p className="text-sm text-muted-foreground">Chart data visualization would go here</p>
+              <LineChart className="mx-auto mb-2 h-16 w-16 text-muted-foreground/60" />
+              <p className="text-sm text-muted-foreground">
+                Chart data visualization would go here
+              </p>
             </div>
           </CardContent>
         </Card>
-        
+
         <Card className="lg:col-span-3">
           <CardHeader>
             <CardTitle>Traffic Sources</CardTitle>
             <CardDescription>Where your visitors are coming from</CardDescription>
           </CardHeader>
-          <CardContent className="h-[300px] flex items-center justify-center border-t pt-4">
+          <CardContent className="flex h-[300px] items-center justify-center border-t pt-4">
             <div className="text-center">
-              <PieChart className="h-16 w-16 text-muted-foreground/60 mx-auto mb-2" />
-              <p className="text-sm text-muted-foreground">Chart data visualization would go here</p>
+              <PieChart className="mx-auto mb-2 h-16 w-16 text-muted-foreground/60" />
+              <p className="text-sm text-muted-foreground">
+                Chart data visualization would go here
+              </p>
             </div>
           </CardContent>
         </Card>
       </div>
-      
+
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <Card className="lg:col-span-2">
           <CardHeader>
@@ -111,7 +118,7 @@ const Dashboard = () => {
             <div className="space-y-4">
               {[1, 2, 3, 4].map((i) => (
                 <div key={i} className="flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-muted">
                     <span className="text-xs font-medium">U{i}</span>
                   </div>
                   <div className="space-y-1">
@@ -123,7 +130,7 @@ const Dashboard = () => {
             </div>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardHeader>
             <CardTitle>Active Projects</CardTitle>

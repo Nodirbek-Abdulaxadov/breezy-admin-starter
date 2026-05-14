@@ -12,7 +12,13 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { DocSection } from "@/components/docs/DocSection";
 import { toast } from "@/components/ui/use-toast";
 
@@ -42,7 +48,9 @@ const FormsPage = () => {
     <div className="space-y-6">
       <div>
         <h2 className="text-3xl font-bold tracking-tight">Forms</h2>
-        <p className="text-muted-foreground">Type-safe forma: react-hook-form + zod validatsiya bilan.</p>
+        <p className="text-muted-foreground">
+          Type-safe forma: react-hook-form + zod validatsiya bilan.
+        </p>
       </div>
 
       <DocSection

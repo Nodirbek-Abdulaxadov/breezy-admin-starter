@@ -27,7 +27,13 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -53,7 +59,13 @@ type UserItem = {
 const initialUsers: UserItem[] = [
   { id: 1, name: "John Doe", email: "john@example.com", role: "Admin", status: "Active" },
   { id: 2, name: "Jane Smith", email: "jane@example.com", role: "User", status: "Active" },
-  { id: 3, name: "Robert Johnson", email: "robert@example.com", role: "Editor", status: "Inactive" },
+  {
+    id: 3,
+    name: "Robert Johnson",
+    email: "robert@example.com",
+    role: "Editor",
+    status: "Inactive",
+  },
   { id: 4, name: "Emily Davis", email: "emily@example.com", role: "User", status: "Active" },
   { id: 5, name: "Michael Brown", email: "michael@example.com", role: "User", status: "Pending" },
 ];
@@ -90,7 +102,8 @@ const Users = () => {
     const query = search.trim().toLowerCase();
     return users.filter((item) => {
       const searchMatched =
-        !query || [item.name, item.email, item.role, item.status].join(" ").toLowerCase().includes(query);
+        !query ||
+        [item.name, item.email, item.role, item.status].join(" ").toLowerCase().includes(query);
       const statusMatched = statusFilter === "all" || item.status === statusFilter;
       const roleMatched = roleFilter === "all" || item.role === roleFilter;
       return searchMatched && statusMatched && roleMatched;
@@ -125,7 +138,7 @@ const Users = () => {
 
     if (editingUser) {
       setUsers((prev) =>
-        prev.map((item) => (item.id === editingUser.id ? { ...item, ...formData } : item))
+        prev.map((item) => (item.id === editingUser.id ? { ...item, ...formData } : item)),
       );
     } else {
       const nextId = users.length ? Math.max(...users.map((item) => item.id)) + 1 : 1;
@@ -152,13 +165,13 @@ const Users = () => {
 
       <Card>
         <CardHeader className="flex flex-col gap-4">
-          <div className="flex flex-col sm:flex-row gap-4 sm:items-center sm:justify-between">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <CardTitle>All Users</CardTitle>
               <CardDescription>A list of all the users in your account.</CardDescription>
             </div>
             <Button onClick={openCreate}>
-              <Plus className="h-4 w-4 mr-2" />
+              <Plus className="mr-2 h-4 w-4" />
               Add User
             </Button>
           </div>
@@ -212,7 +225,7 @@ const Users = () => {
           </div>
         </CardHeader>
         <CardContent>
-          <div className="rounded-md border overflow-hidden">
+          <div className="overflow-hidden rounded-md border">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -240,7 +253,9 @@ const Users = () => {
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                          <DropdownMenuItem onClick={() => openEdit(user)}>Edit user</DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => openEdit(user)}>
+                            Edit user
+                          </DropdownMenuItem>
                           <DropdownMenuItem
                             className="text-destructive"
                             onClick={() => setDeleteTarget(user)}
@@ -268,10 +283,20 @@ const Users = () => {
               {(currentPage - 1) * PAGE_SIZE + pagedUsers.length} of {filteredUsers.length}
             </p>
             <div className="flex items-center gap-2">
-              <Button variant="outline" size="sm" disabled={currentPage <= 1} onClick={() => setPage((prev) => prev - 1)}>
+              <Button
+                variant="outline"
+                size="sm"
+                disabled={currentPage <= 1}
+                onClick={() => setPage((prev) => prev - 1)}
+              >
                 Previous
               </Button>
-              <Button variant="outline" size="sm" disabled={currentPage >= totalPages} onClick={() => setPage((prev) => prev + 1)}>
+              <Button
+                variant="outline"
+                size="sm"
+                disabled={currentPage >= totalPages}
+                onClick={() => setPage((prev) => prev + 1)}
+              >
                 Next
               </Button>
             </div>
@@ -302,7 +327,9 @@ const Users = () => {
                 id="user-email"
                 type="email"
                 value={formData.email}
-                onChange={(event) => setFormData((prev) => ({ ...prev, email: event.target.value }))}
+                onChange={(event) =>
+                  setFormData((prev) => ({ ...prev, email: event.target.value }))
+                }
               />
             </div>
             <div className="grid gap-3 sm:grid-cols-2">
@@ -310,7 +337,9 @@ const Users = () => {
                 <Label>Role</Label>
                 <Select
                   value={formData.role}
-                  onValueChange={(value: UserRole) => setFormData((prev) => ({ ...prev, role: value }))}
+                  onValueChange={(value: UserRole) =>
+                    setFormData((prev) => ({ ...prev, role: value }))
+                  }
                 >
                   <SelectTrigger>
                     <SelectValue />
@@ -326,7 +355,9 @@ const Users = () => {
                 <Label>Status</Label>
                 <Select
                   value={formData.status}
-                  onValueChange={(value: UserStatus) => setFormData((prev) => ({ ...prev, status: value }))}
+                  onValueChange={(value: UserStatus) =>
+                    setFormData((prev) => ({ ...prev, status: value }))
+                  }
                 >
                   <SelectTrigger>
                     <SelectValue />
@@ -341,7 +372,9 @@ const Users = () => {
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setFormOpen(false)}>Cancel</Button>
+            <Button variant="outline" onClick={() => setFormOpen(false)}>
+              Cancel
+            </Button>
             <Button onClick={submitForm}>{editingUser ? "Update" : "Create"}</Button>
           </DialogFooter>
         </DialogContent>
@@ -357,7 +390,10 @@ const Users = () => {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction className="bg-destructive text-destructive-foreground hover:bg-destructive/90" onClick={confirmDelete}>
+            <AlertDialogAction
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              onClick={confirmDelete}
+            >
               Delete
             </AlertDialogAction>
           </AlertDialogFooter>

@@ -6,7 +6,9 @@ const ButtonsPage = () => {
     <div className="space-y-6">
       <div>
         <h2 className="text-3xl font-bold tracking-tight">Buttons</h2>
-        <p className="text-muted-foreground">Button komponenti action, submit va icon triggerlar uchun ishlatiladi.</p>
+        <p className="text-muted-foreground">
+          Button komponenti action, submit va icon triggerlar uchun ishlatiladi.
+        </p>
       </div>
 
       <DocSection

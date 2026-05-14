@@ -2,48 +2,154 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
   type ReactNode,
 } from "react";
+import { api, ApiError, isMockMode } from "@/lib/api";
+
+export interface AuthUser {
+  id: string;
+  email: string;
+  name: string;
+  roles?: string[];
+  avatarUrl?: string;
+}
 
 interface AuthContextValue {
+  user: AuthUser | null;
   isAuthenticated: boolean;
-  login: () => void;
+  isLoading: boolean;
+  login: (email: string, password: string) => Promise<void>;
   logout: () => void;
 }
 
-const AUTH_STORAGE_KEY = "admin-authenticated";
+const TOKEN_KEY = "auth.accessToken";
+const USER_KEY = "auth.user";
 
-const AuthContext = createContext<AuthContextValue | undefined>(undefined);
+export const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
-const readInitialAuthState = () => {
-  if (typeof window === "undefined") {
-    return false;
+const readStoredUser = (): AuthUser | null => {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = localStorage.getItem(USER_KEY);
+    if (!raw) return null;
+    return JSON.parse(raw) as AuthUser;
+  } catch {
+    return null;
   }
-  return localStorage.getItem(AUTH_STORAGE_KEY) === "true";
 };
 
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(readInitialAuthState);
+const readStoredToken = (): string | null => {
+  if (typeof window === "undefined") return null;
+  return localStorage.getItem(TOKEN_KEY);
+};
 
-  const login = useCallback(() => {
-    localStorage.setItem(AUTH_STORAGE_KEY, "true");
-    setIsAuthenticated(true);
-  }, []);
+const AuthProvider = ({ children }: { children: ReactNode }) => {
+  const [user, setUser] = useState<AuthUser | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const logout = useCallback(() => {
-    localStorage.removeItem(AUTH_STORAGE_KEY);
-    setIsAuthenticated(false);
+    localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(USER_KEY);
+    setUser(null);
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new Event("auth:logout"));
+    }
   }, []);
 
-  const value = useMemo(
+  // Initial restore + background refresh
+  useEffect(() => {
+    let cancelled = false;
+    const restore = async () => {
+      const storedToken = readStoredToken();
+      const storedUser = readStoredUser();
+
+      if (storedToken && storedUser) {
+        if (!cancelled) {
+          setUser(storedUser);
+        }
+
+        // Background refresh
+        try {
+          if (!isMockMode()) {
+            const fresh = await api.get<AuthUser>("/auth/me");
+            if (!cancelled) {
+              setUser(fresh);
+              localStorage.setItem(USER_KEY, JSON.stringify(fresh));
+            }
+          }
+        } catch (err) {
+          if (!cancelled) {
+            const status = err instanceof ApiError ? err.status : undefined;
+            if (status === 401 || status === undefined) {
+              // silent logout
+              localStorage.removeItem(TOKEN_KEY);
+              localStorage.removeItem(USER_KEY);
+              setUser(null);
+            }
+          }
+        }
+      }
+
+      if (!cancelled) {
+        setIsLoading(false);
+      }
+    };
+
+    void restore();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  // Listen for unauthorized events
+  useEffect(() => {
+    const handler = () => {
+      logout();
+    };
+    window.addEventListener("auth:unauthorized", handler);
+    return () => {
+      window.removeEventListener("auth:unauthorized", handler);
+    };
+  }, [logout]);
+
+  const login = useCallback(async (email: string, password: string) => {
+    if (isMockMode()) {
+      await new Promise((resolve) => setTimeout(resolve, 400));
+      const token = `mock-token-${Date.now()}`;
+      const mockUser: AuthUser = {
+        id: "u_1",
+        email,
+        name: email.split("@")[0],
+      };
+      localStorage.setItem(TOKEN_KEY, token);
+      localStorage.setItem(USER_KEY, JSON.stringify(mockUser));
+      setUser(mockUser);
+      return;
+    }
+
+    const result = await api.post<{
+      accessToken: string;
+      user: AuthUser;
+    }>("/auth/login", { email, password });
+
+    localStorage.setItem(TOKEN_KEY, result.accessToken);
+    localStorage.setItem(USER_KEY, JSON.stringify(result.user));
+    setUser(result.user);
+  }, []);
+
+  const value = useMemo<AuthContextValue>(
     () => ({
-      isAuthenticated,
+      user,
+      isAuthenticated: user !== null,
+      isLoading,
       login,
       logout,
     }),
-    [isAuthenticated, login, logout]
+    [user, isLoading, login, logout],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
@@ -56,3 +162,6 @@ export const useAuth = () => {
   }
   return context;
 };
+
+export { AuthProvider };
+export default AuthProvider;

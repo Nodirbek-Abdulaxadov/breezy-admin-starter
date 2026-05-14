@@ -68,17 +68,15 @@ const Notifications = () => {
     }
 
     return notifications.filter((item) =>
-      [item.title, item.description, item.type].join(" ").toLowerCase().includes(query)
+      [item.title, item.description, item.type].join(" ").toLowerCase().includes(query),
     );
   }, [search]);
 
   return (
-    <div className="space-y-6 max-w-5xl">
+    <div className="max-w-5xl space-y-6">
       <div>
         <h2 className="text-3xl font-bold tracking-tight">Notifications</h2>
-        <p className="text-muted-foreground">
-          Stay updated on important events and system alerts.
-        </p>
+        <p className="text-muted-foreground">Stay updated on important events and system alerts.</p>
       </div>
 
       <Card className="border-border/80 shadow-sm">
@@ -111,19 +109,26 @@ const Notifications = () => {
             const Icon = meta.icon;
 
             return (
-              <div key={notification.id} className="rounded-lg border p-4 transition-colors hover:bg-accent/20">
+              <div
+                key={notification.id}
+                className="rounded-lg border p-4 transition-colors hover:bg-accent/20"
+              >
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                  <div className="flex gap-3 min-w-0">
-                    <div className="rounded-md border bg-background p-2 shrink-0">
+                  <div className="flex min-w-0 gap-3">
+                    <div className="shrink-0 rounded-md border bg-background p-2">
                       <Icon className="h-4 w-4" />
                     </div>
-                    <div className="space-y-1 min-w-0">
+                    <div className="min-w-0 space-y-1">
                       <p className="font-medium leading-tight">{notification.title}</p>
-                      <p className="text-sm text-muted-foreground break-words">{notification.description}</p>
+                      <p className="break-words text-sm text-muted-foreground">
+                        {notification.description}
+                      </p>
                       <p className="text-xs text-muted-foreground">{notification.time}</p>
                     </div>
                   </div>
-                  <Badge variant={meta.badgeVariant} className="w-fit">{meta.badge}</Badge>
+                  <Badge variant={meta.badgeVariant} className="w-fit">
+                    {meta.badge}
+                  </Badge>
                 </div>
                 {idx < filteredNotifications.length - 1 && <Separator className="mt-4" />}
               </div>
@@ -132,9 +137,7 @@ const Notifications = () => {
           {filteredNotifications.length === 0 ? (
             <div className="rounded-lg border border-dashed p-8 text-center">
               <p className="font-medium">No notifications found</p>
-              <p className="text-sm text-muted-foreground mt-1">
-                Try a different search keyword.
-              </p>
+              <p className="mt-1 text-sm text-muted-foreground">Try a different search keyword.</p>
             </div>
           ) : null}
         </CardContent>
