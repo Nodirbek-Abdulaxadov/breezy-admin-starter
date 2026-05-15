@@ -3,7 +3,6 @@ import { Outlet } from "react-router-dom";
 import { Sidebar } from "./Sidebar";
 import { Topbar } from "./Topbar";
 import { Footer } from "./Footer";
-import { ThemeProvider } from "./ThemeProvider";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 
 const SIDEBAR_BREAKPOINT = 1024; // lg
@@ -43,7 +42,7 @@ const AppLayout = () => {
   const sidebarOpen = isMobile ? mobileOpen : desktopOpen;
 
   return (
-    <ThemeProvider defaultTheme="system" storageKey="admin-theme">
+    <>
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-background focus:px-3 focus:py-2 focus:shadow"
@@ -69,7 +68,7 @@ const AppLayout = () => {
           <Footer />
         </div>
       </div>
-    </ThemeProvider>
+    </>
   );
 };
 

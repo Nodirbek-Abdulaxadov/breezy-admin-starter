@@ -41,8 +41,10 @@ const NavItem = ({ icon: Icon, label, to, isOpen, end = false, className }: NavI
     end={end}
     className={({ isActive }) =>
       cn(
-        "flex items-center rounded-lg px-3 py-2 text-sm transition-all hover:bg-accent hover:text-accent-foreground",
-        isActive ? "bg-accent font-medium text-accent-foreground" : "text-muted-foreground",
+        "flex items-center rounded-lg px-3 py-2 text-sm transition-all hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+        isActive
+          ? "bg-sidebar-accent font-medium text-sidebar-accent-foreground"
+          : "text-sidebar-foreground/70",
         !isOpen && "justify-center p-2",
         className,
       )
@@ -106,7 +108,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, isMobile }) => {
   return (
     <aside
       className={cn(
-        "z-30 flex h-full flex-col border-r border-border bg-card transition-all duration-300 ease-in-out",
+        "z-30 flex h-full flex-col border-r border-sidebar-border bg-sidebar text-sidebar-foreground transition-all duration-300 ease-in-out",
         // On mobile the parent Sheet handles slide-in; full width inside the sheet
         isMobile ? "w-64" : isOpen ? "w-64" : "w-16",
       )}
@@ -149,8 +151,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, isMobile }) => {
               aria-expanded={componentsExpanded}
               aria-controls="components-nav-links"
               className={cn(
-                "flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm transition-all hover:bg-accent",
-                componentsGroupActive ? "text-foreground" : "text-muted-foreground",
+                "flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm transition-all hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
+                componentsGroupActive ? "text-sidebar-foreground" : "text-sidebar-foreground/70",
               )}
             >
               <span className="flex items-center">
@@ -208,7 +210,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, isMobile }) => {
             </div>
             <div className="min-w-0 truncate">
               <p className="truncate text-sm font-medium">{user?.name ?? "Guest"}</p>
-              <p className="truncate text-xs text-muted-foreground">{user?.email ?? "—"}</p>
+              <p className="truncate text-xs text-sidebar-foreground/70">{user?.email ?? "—"}</p>
             </div>
           </div>
         ) : (
