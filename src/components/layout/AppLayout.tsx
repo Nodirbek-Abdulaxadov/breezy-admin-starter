@@ -49,7 +49,7 @@ const AppLayout = () => {
       >
         Skip to main content
       </a>
-      <div className="flex h-screen bg-background text-foreground">
+      <div className="flex h-screen overflow-hidden bg-background text-foreground">
         {!isMobile && <Sidebar isOpen={desktopOpen} isMobile={false} />}
 
         {isMobile && (
@@ -62,7 +62,7 @@ const AppLayout = () => {
 
         <div className="flex w-full min-w-0 flex-1 flex-col">
           <Topbar toggleSidebar={toggleSidebar} sidebarOpen={sidebarOpen} />
-          <main id="main-content" className="flex-1 overflow-y-auto p-4 md:p-6" tabIndex={-1}>
+          <main id="main-content" className="min-h-0 flex-1 overflow-y-auto p-4 md:p-6" tabIndex={-1}>
             <Outlet />
           </main>
           <Footer />
