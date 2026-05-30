@@ -128,8 +128,14 @@
     @apply border-border;
   }
 
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
   body {
-    @apply bg-background text-foreground;
+    @apply overflow-hidden bg-background text-foreground;
   }
 
   /* Hide scrollbar for Chrome, Safari and Opera */
